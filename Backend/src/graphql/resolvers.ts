@@ -1,10 +1,10 @@
-import { sayHello } from "./queries/test";
 import { loginUser, registerUser } from "./mutations/user";
 import { createProduct } from "./mutations/product";
+import { getProducts } from "./queries/product";
 
 const resolvers = {
     Query: {
-        message: sayHello
+        getProducts,
     },
 
     Mutation: {

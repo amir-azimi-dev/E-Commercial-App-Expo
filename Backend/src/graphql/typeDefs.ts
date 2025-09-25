@@ -6,7 +6,7 @@ const typeDefs = `#graphql
     ${ProductTypeDef}
 
     type Query {
-        message: String!,
+        getProducts: [Product!]!,
     }
 
     type Mutation {
