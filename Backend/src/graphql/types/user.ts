@@ -4,6 +4,11 @@ type RegisterUserParams = {
     password: string;
 };
 
+type LoginUserParams = {
+    email: string;
+    password: string;
+};
+
 const UserTypeDef = `#graphql
     type User {
         _id: ID!,
@@ -12,5 +17,5 @@ const UserTypeDef = `#graphql
     }
 `;
 
-export type { RegisterUserParams };
+export type { RegisterUserParams, LoginUserParams };
 export { UserTypeDef };

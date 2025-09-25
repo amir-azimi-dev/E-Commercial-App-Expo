@@ -1,7 +1,7 @@
 import { GraphQLError } from "graphql";
 import UserModel, { UserDocument } from "../../db/models/user";
 import { RegisterUserParams } from "../types/user";
-import { hash } from "../../utils/hash";
+import { compare, hash } from "../../utils/hash";
 
 const registerUser = async (_: unknown, { name, email, password }: RegisterUserParams): Promise<any | UserDocument> => {
     try {
@@ -24,6 +24,17 @@ const registerUser = async (_: unknown, { name, email, password }: RegisterUserP
     }
 };
 
+const loginUser = async (_: unknown, { email, password }: RegisterUserParams): Promise<any | UserDocument> => {
+    const userData = await UserModel.findOne({ email });
+    if (!userData) throw new GraphQLError("User Not Found!")
+
+    const isPasswordCorrect = compare(password, userData.password)
+    if (!isPasswordCorrect) throw new GraphQLError("Invalid Credentials!")
+
+    return userData;
+};
+
 export {
-    registerUser
+    registerUser,
+    loginUser
 };

@@ -1,4 +1,4 @@
-import { registerUser } from "./mutations/user";
+import { loginUser, registerUser } from "./mutations/user";
 import { sayHello } from "./queries/test";
 
 const resolvers = {
@@ -7,7 +7,8 @@ const resolvers = {
     },
 
     Mutation: {
-        registerUser
+        registerUser,
+        loginUser
     }
 };
 
