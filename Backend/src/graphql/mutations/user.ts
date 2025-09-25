@@ -3,7 +3,7 @@ import UserModel, { UserDocument } from "../../db/models/user";
 import { RegisterUserParams } from "../types/user";
 import { compare, hash } from "../../utils/hash";
 
-const registerUser = async (_: unknown, { name, email, password }: RegisterUserParams): Promise<any | UserDocument> => {
+const registerUser = async (_: unknown, { name, email, password }: RegisterUserParams): Promise<UserDocument> => {
     try {
         const data = { name, email, password: hash(password) };
         const newUserData = await UserModel.create(data);
@@ -24,7 +24,7 @@ const registerUser = async (_: unknown, { name, email, password }: RegisterUserP
     }
 };
 
-const loginUser = async (_: unknown, { email, password }: RegisterUserParams): Promise<any | UserDocument> => {
+const loginUser = async (_: unknown, { email, password }: RegisterUserParams): Promise<UserDocument> => {
     const userData = await UserModel.findOne({ email });
     if (!userData) throw new GraphQLError("User Not Found!")
 

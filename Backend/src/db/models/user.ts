@@ -1,4 +1,4 @@
-import mongoose, { InferRawDocType } from "mongoose";
+import mongoose, { HydratedDocument, InferSchemaType } from "mongoose";
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -22,5 +22,7 @@ const userSchema = new mongoose.Schema({
 
 const UserModel = mongoose.model("User", userSchema);
 
-export type UserDocument = InferRawDocType<typeof userSchema>;
+type User = InferSchemaType<typeof userSchema>;
+export type UserDocument = HydratedDocument<User>;
+
 export default UserModel;
