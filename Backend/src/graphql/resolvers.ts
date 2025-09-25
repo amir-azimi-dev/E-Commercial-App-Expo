@@ -1,5 +1,6 @@
-import { loginUser, registerUser } from "./mutations/user";
 import { sayHello } from "./queries/test";
+import { loginUser, registerUser } from "./mutations/user";
+import { createProduct } from "./mutations/product";
 
 const resolvers = {
     Query: {
@@ -8,7 +9,9 @@ const resolvers = {
 
     Mutation: {
         registerUser,
-        loginUser
+        loginUser,
+
+        createProduct,
     }
 };
 
