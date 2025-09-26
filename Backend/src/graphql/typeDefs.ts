@@ -21,6 +21,7 @@ const typeDefs = `#graphql
         createProduct(title: String!, image: String!, countInStock: Int!, price: Int!): Product,
 
         createCategory(title: String!, color: String!, icon: String!, image: String): Category,
+        editCategory(id: String!, title: String!, color: String!, icon: String!, image: String): Category,
         removeCategory(id: String!): Category,
     }
 `;

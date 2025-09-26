@@ -15,6 +15,21 @@ const createCategory = async (_: unknown, { title, color, icon, image }: CreateC
     }
 };
 
+const editCategory = async (_: unknown, { id, title, color, icon, image }: CreateCategoryParams & { id: string }): Promise<CategoryDocument> => {
+    try {
+        if (!mongoose.isValidObjectId(id)) throw new GraphQLError("Invalid entry!");
+
+        const data = { title, color, icon, image };
+        const newCategoryData = await CategoryModel.findByIdAndUpdate(id, data, { new: true });
+        if (!newCategoryData) throw new GraphQLError("Category not found!");
+
+        return newCategoryData;
+
+    } catch (error: any) {
+        throw new GraphQLError(error);
+    }
+};
+
 const removeCategory = async (_: unknown, { id }: { id: string }): Promise<CategoryDocument> => {
     try {
         if (!mongoose.isValidObjectId(id)) throw new GraphQLError("Invalid entry!");
@@ -31,5 +46,6 @@ const removeCategory = async (_: unknown, { id }: { id: string }): Promise<Categ
 
 export {
     createCategory,
+    editCategory,
     removeCategory
 };
