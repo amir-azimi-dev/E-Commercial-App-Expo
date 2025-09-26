@@ -9,6 +9,9 @@ const typeDefs = `#graphql
 
     type Query {
         getProducts: [Product!]!,
+
+        getCategories: [Category!]!,
+        getCategory(id: String!): Category,
     }
 
     type Mutation {
