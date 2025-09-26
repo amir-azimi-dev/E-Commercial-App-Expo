@@ -9,8 +9,8 @@ const ProductTypeDef = `#graphql
     type Product {
         _id: ID!,
         title: String!,
-        image: String!
-        countInStock: Int!
+        image: String!,
+        countInStock: Int!,
         price: Int!
     }
 `;

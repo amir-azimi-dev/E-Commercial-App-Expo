@@ -1,6 +1,7 @@
 import { loginUser, registerUser } from "./mutations/user";
 import { createProduct } from "./mutations/product";
 import { getProducts } from "./queries/product";
+import { createCategory, removeCategory } from "./mutations/category";
 
 const resolvers = {
     Query: {
@@ -12,6 +13,9 @@ const resolvers = {
         loginUser,
 
         createProduct,
+
+        createCategory,
+        removeCategory
     }
 };
 
