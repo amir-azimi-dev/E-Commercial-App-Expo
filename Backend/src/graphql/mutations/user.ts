@@ -25,13 +25,18 @@ const registerUser = async (_: unknown, { name, email, password }: RegisterUserP
 };
 
 const loginUser = async (_: unknown, { email, password }: RegisterUserParams): Promise<UserDocument> => {
-    const userData = await UserModel.findOne({ email });
-    if (!userData) throw new GraphQLError("User Not Found!")
+    try {
+        const userData = await UserModel.findOne({ email });
+        if (!userData) throw new GraphQLError("User Not Found!")
 
-    const isPasswordCorrect = compare(password, userData.password)
-    if (!isPasswordCorrect) throw new GraphQLError("Invalid Credentials!")
+        const isPasswordCorrect = compare(password, userData.password)
+        if (!isPasswordCorrect) throw new GraphQLError("Invalid Credentials!")
 
-    return userData;
+        return userData;
+
+    } catch (error: any) {
+        throw new GraphQLError(error);
+    }
 };
 
 export {
