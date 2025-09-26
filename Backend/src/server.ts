@@ -14,7 +14,7 @@ const app = express();
 const host = process.env.HOST || "http://localhost";
 const port = process.env.PORT || 3000;
 
-app.use(cors<CorsRequest>())
+app.use(cors<CorsRequest>());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 

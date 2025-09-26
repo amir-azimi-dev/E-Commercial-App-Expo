@@ -1,22 +1,58 @@
-import mongoose, { HydratedDocument, InferRawDocType, InferSchemaType } from "mongoose";
+import mongoose, { HydratedDocument, InferSchemaType } from "mongoose";
 
 const productSchema = new mongoose.Schema({
     title: {
         type: String,
         require: true
     },
+    description: {
+        type: String,
+        require: true
+    },
+    richDescription: {
+        type: String,
+        default: ""
+    },
     image: {
         type: String,
-        required: true
+        default: ""
     },
-    countInStock: {
-        type: Number,
-        required: true,
+    images: [{
+        type: String
+    }],
+    brand: {
+        type: String,
+        default: ""
     },
     price: {
         type: Number,
         required: true,
     },
+    category: {
+        type: mongoose.Types.ObjectId,
+        ref: "Category",
+        required: true
+    },
+    countInStock: {
+        type: Number,
+        required: true,
+        min: 0,
+        max: 300
+    },
+    rating: {
+        type: Number,
+        default: 5,
+        min: 0,
+        max: 5
+    },
+    reviewsCount: {
+        type: Number,
+        default: 0
+    },
+    isFeatured: {
+        type: Boolean,
+        default: false
+    }
 }, {
     timestamps: true,
     autoCreate: true
