@@ -40,7 +40,7 @@ const createProduct = async (
             reviewsCount,
             isFeatured
         };
-        const newProductData = await ProductModel.create(data);
+        const newProductData = (await ProductModel.create(data)).populate("category");
 
         return newProductData;
 
@@ -97,8 +97,23 @@ const editProduct = async (
     }
 };
 
+const removeProduct = async (_: unknown, { id }: { id: string }): Promise<ProductDocument> => {
+    try {
+        if (!mongoose.isValidObjectId(id)) throw new GraphQLError("Invalid entry!");
+
+        const removedProduct = await ProductModel.findByIdAndDelete(id).populate("category");
+        if (!removedProduct) throw new GraphQLError("Product not found!");
+
+        return removedProduct;
+
+    } catch (error: any) {
+        throw new GraphQLError(error);
+    }
+};
+
 
 export {
     createProduct,
     editProduct,
+    removeProduct
 };

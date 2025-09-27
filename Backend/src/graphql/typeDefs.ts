@@ -20,6 +20,7 @@ const typeDefs = `#graphql
 
         createProduct(title: String!, description: String!, richDescription: String, image: String, images: [String!], brand: String, price: Int!, category: String!, countInStock: Int!, rating: Int, reviewsCount: Int, isFeatured: Boolean): Product,
         editProduct(id: String!, title: String!, description: String!, richDescription: String, image: String, images: [String!], brand: String, price: Int!, category: String!, countInStock: Int!, rating: Int, reviewsCount: Int, isFeatured: Boolean): Product,
+        removeProduct(id: String!): Product,
 
         createCategory(title: String!, color: String!, icon: String!, image: String): Category,
         editCategory(id: String!, title: String!, color: String!, icon: String!, image: String): Category,
