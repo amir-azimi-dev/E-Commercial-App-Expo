@@ -1,19 +1,23 @@
 import { UserTypeDef } from "./types/user";
 import { ProductTypeDef } from "./types/product";
 import { CategoryTypeDef } from "./types/category";
+import { StatisticsTypeDef } from "./types/statistics";
 
 const typeDefs = `#graphql
     scalar Date,
-    
+
     ${UserTypeDef}
     ${ProductTypeDef}
     ${CategoryTypeDef}
+    ${StatisticsTypeDef}
 
     type Query {
         getProducts: [Product!]!,
 
         getCategories: [Category!]!,
         getCategory(id: String!): Category,
+
+        getStatistics: Statistics!,
     }
 
     type Mutation {
