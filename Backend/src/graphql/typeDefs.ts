@@ -12,7 +12,7 @@ const typeDefs = `#graphql
     ${StatisticsTypeDef}
 
     type Query {
-        getProducts(count: Int, onlyFeaturedProducts: Boolean): [Product!]!,
+        getProducts(count: Int, categories: [String!], onlyFeaturedProducts: Boolean): [Product!]!,
 
         getCategories: [Category!]!,
         getCategory(id: String!): Category,

@@ -15,6 +15,7 @@ type CreateProductParams = {
 
 type GetProductsParams = {
     count?: number;
+    categories?: string[];
     onlyFeaturedProducts?: boolean;
 };
 
