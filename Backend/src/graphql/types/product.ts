@@ -27,7 +27,9 @@ const ProductTypeDef = `#graphql
         countInStock: Int!,
         rating: Int,
         reviewsCount: Int,
-        isFeatured: Boolean
+        isFeatured: Boolean,
+        createdAt: Date!,
+        updatedAt: Date!
     }
 `;
 

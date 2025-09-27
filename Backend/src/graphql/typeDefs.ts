@@ -3,6 +3,8 @@ import { ProductTypeDef } from "./types/product";
 import { CategoryTypeDef } from "./types/category";
 
 const typeDefs = `#graphql
+    scalar Date,
+    
     ${UserTypeDef}
     ${ProductTypeDef}
     ${CategoryTypeDef}

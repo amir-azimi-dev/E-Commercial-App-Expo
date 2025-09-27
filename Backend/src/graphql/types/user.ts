@@ -13,7 +13,9 @@ const UserTypeDef = `#graphql
     type User {
         _id: ID!,
         name: String!,
-        email: String!
+        email: String!,
+        createdAt: Date!,
+        updatedAt: Date!
     }
 `;
 

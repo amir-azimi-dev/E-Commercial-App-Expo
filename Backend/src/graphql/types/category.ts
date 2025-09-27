@@ -11,7 +11,9 @@ const CategoryTypeDef = `#graphql
         title: String!,
         color: String!,
         icon: String!,
-        image: String
+        image: String,
+        createdAt: Date!,
+        updatedAt: Date!
     }
 `;
 

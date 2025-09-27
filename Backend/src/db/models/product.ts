@@ -61,6 +61,9 @@ const productSchema = new mongoose.Schema({
 const ProductModel = mongoose.model("Product", productSchema);
 
 type Product = InferSchemaType<typeof productSchema>;
-export type ProductDocument = HydratedDocument<Product>;
+export type ProductDocument = HydratedDocument<Product> & {
+    createdAt: Date;
+    updatedAt: Date;
+};
 
 export default ProductModel;

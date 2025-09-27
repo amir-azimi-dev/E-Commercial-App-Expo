@@ -26,6 +26,9 @@ const categorySchema = new mongoose.Schema({
 const CategoryModel = mongoose.model("Category", categorySchema);
 
 type Category = InferSchemaType<typeof categorySchema>;
-export type CategoryDocument = HydratedDocument<Category>;
+export type CategoryDocument = HydratedDocument<Category> & {
+    createdAt: Date;
+    updatedAt: Date;
+};
 
 export default CategoryModel;

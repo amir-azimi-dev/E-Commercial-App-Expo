@@ -23,6 +23,9 @@ const userSchema = new mongoose.Schema({
 const UserModel = mongoose.model("User", userSchema);
 
 type User = InferSchemaType<typeof userSchema>;
-export type UserDocument = HydratedDocument<User>;
+export type UserDocument = HydratedDocument<User> & {
+    createdAt: Date;
+    updatedAt: Date;
+};
 
 export default UserModel;
