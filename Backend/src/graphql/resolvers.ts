@@ -1,5 +1,5 @@
 import { loginUser, registerUser } from "./mutations/user";
-import { createProduct } from "./mutations/product";
+import { createProduct, editProduct } from "./mutations/product";
 import { getProducts } from "./queries/product";
 import { createCategory, editCategory, removeCategory } from "./mutations/category";
 import { getCategories, getCategory } from "./queries/category";
@@ -17,6 +17,7 @@ const resolvers = {
         loginUser,
 
         createProduct,
+        editProduct,
 
         createCategory,
         editCategory,
