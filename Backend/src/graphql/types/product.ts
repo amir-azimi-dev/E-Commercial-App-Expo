@@ -13,6 +13,11 @@ type CreateProductParams = {
     isFeatured?: boolean;
 };
 
+type GetProductsParams = {
+    count?: number;
+    onlyFeaturedProducts?: boolean;
+};
+
 const ProductTypeDef = `#graphql
     type Product {
         _id: ID!,
@@ -33,5 +38,5 @@ const ProductTypeDef = `#graphql
     }
 `;
 
-export type { CreateProductParams };
+export type { CreateProductParams, GetProductsParams };
 export { ProductTypeDef };
