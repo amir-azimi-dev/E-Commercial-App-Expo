@@ -18,7 +18,7 @@ const typeDefs = `#graphql
         registerUser(name: String!, email: String!, password: String!): User,
         loginUser(email: String!, password: String!): User,
 
-        createProduct(title: String!, image: String!, countInStock: Int!, price: Int!): Product,
+        createProduct(title: String!, description: String!, richDescription: String, image: String, images: [String!], brand: String, price: Int!, category: String!, countInStock: Int!, rating: Int, reviewsCount: Int, isFeatured: Boolean): Product,
 
         createCategory(title: String!, color: String!, icon: String!, image: String): Category,
         editCategory(id: String!, title: String!, color: String!, icon: String!, image: String): Category,
