@@ -1,18 +1,31 @@
 import { GraphQLError } from "graphql";
 import UserModel, { UserDocument } from "../../db/models/user";
-import { RegisterUserParams } from "../types/user";
+import { LoginUserParams, RegisterUserParams } from "../types/user";
 import { compare, hash } from "../../utils/hash";
 
-const registerUser = async (_: unknown, { name, email, password }: RegisterUserParams): Promise<UserDocument> => {
+const registerUser = async (_: unknown, { name, email, password, phone, street, apartment, city, zip, country }: RegisterUserParams): Promise<UserDocument> => {
     try {
-        const data = { name, email, password: hash(password) };
+        const isTheFirstUser = !(await UserModel.countDocuments());
+        const data = {
+            name,
+            email,
+            password: hash(password),
+            isAdmin: isTheFirstUser,
+            phone,
+            street,
+            apartment,
+            city,
+            zip,
+            country
+        };
+
         const newUserData = await UserModel.create(data);
 
         return newUserData;
 
     } catch (error: any) {
         if (error.code === 11000) {
-            throw new GraphQLError("Email is already registered!", {
+            throw new GraphQLError("Email or Phone Number is already registered!", {
                 extensions: {
                     field: "email",
                     code: "BAD_USER_INPUT"
@@ -24,9 +37,9 @@ const registerUser = async (_: unknown, { name, email, password }: RegisterUserP
     }
 };
 
-const loginUser = async (_: unknown, { email, password }: RegisterUserParams): Promise<UserDocument> => {
+const loginUser = async (_: unknown, { identifier, password }: LoginUserParams): Promise<UserDocument> => {
     try {
-        const userData = await UserModel.findOne({ email });
+        const userData = await UserModel.findOne({ $or: [{ email: identifier }, { phone: identifier }] });
         if (!userData) throw new GraphQLError("User Not Found!")
 
         const isPasswordCorrect = compare(password, userData.password)

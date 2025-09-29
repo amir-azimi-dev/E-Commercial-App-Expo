@@ -2,10 +2,16 @@ type RegisterUserParams = {
     name: string;
     email: string;
     password: string;
+    phone: string;
+    street?: string;
+    apartment?: string;
+    city?: string;
+    zip?: string;
+    country?: string;
 };
 
 type LoginUserParams = {
-    email: string;
+    identifier: string;
     password: string;
 };
 
@@ -14,6 +20,13 @@ const UserTypeDef = `#graphql
         _id: ID!,
         name: String!,
         email: String!,
+        phone: String!,
+        isAdmin: String!,
+        street: String,
+        apartment: String,
+        city: String,
+        zip: String,
+        country: String,
         createdAt: Date!,
         updatedAt: Date!
     }

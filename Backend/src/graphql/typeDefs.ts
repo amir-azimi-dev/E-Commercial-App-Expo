@@ -21,8 +21,8 @@ const typeDefs = `#graphql
     }
 
     type Mutation {
-        registerUser(name: String!, email: String!, password: String!): User,
-        loginUser(email: String!, password: String!): User,
+        registerUser(name: String!, email: String!, password: String!, phone: String!, street: String, apartment: String, city: String, zip: String, country: String): User,
+        loginUser(identifier: String!, password: String!): User,
 
         createProduct(title: String!, description: String!, richDescription: String, image: String, images: [String!], brand: String, price: Int!, category: String!, countInStock: Int!, rating: Int, reviewsCount: Int, isFeatured: Boolean): Product,
         editProduct(id: String!, title: String!, description: String!, richDescription: String, image: String, images: [String!], brand: String, price: Int!, category: String!, countInStock: Int!, rating: Int, reviewsCount: Int, isFeatured: Boolean): Product,
