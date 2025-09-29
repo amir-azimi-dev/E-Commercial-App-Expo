@@ -32,5 +32,12 @@ const UserTypeDef = `#graphql
     }
 `;
 
+const AuthTypeDef = `#graphql
+    type Auth {
+        user: User!,
+        token: String!
+    }
+`;
+
 export type { RegisterUserParams, LoginUserParams };
-export { UserTypeDef };
+export { UserTypeDef, AuthTypeDef };

@@ -2,8 +2,14 @@ import { GraphQLError } from "graphql";
 import UserModel, { UserDocument } from "../../db/models/user";
 import { LoginUserParams, RegisterUserParams } from "../types/user";
 import { compare, hash } from "../../utils/hash";
+import { generateToken } from "../../utils/jwt";
 
-const registerUser = async (_: unknown, { name, email, password, phone, street, apartment, city, zip, country }: RegisterUserParams): Promise<UserDocument> => {
+type AuthPayload = {
+    user: UserDocument;
+    token: string;
+};
+
+const registerUser = async (_: unknown, { name, email, password, phone, street, apartment, city, zip, country }: RegisterUserParams): Promise<AuthPayload> => {
     try {
         const isTheFirstUser = !(await UserModel.countDocuments());
         const data = {
@@ -21,7 +27,10 @@ const registerUser = async (_: unknown, { name, email, password, phone, street, 
 
         const newUserData = await UserModel.create(data);
 
-        return newUserData;
+        const userToken = generateToken({ userId: newUserData._id });
+        if (!userToken) throw new GraphQLError("Error while generating token!");
+
+        return ({ user: newUserData, token: userToken });
 
     } catch (error: any) {
         if (error.code === 11000) {
@@ -37,7 +46,7 @@ const registerUser = async (_: unknown, { name, email, password, phone, street, 
     }
 };
 
-const loginUser = async (_: unknown, { identifier, password }: LoginUserParams): Promise<UserDocument> => {
+const loginUser = async (_: unknown, { identifier, password }: LoginUserParams): Promise<AuthPayload> => {
     try {
         const userData = await UserModel.findOne({ $or: [{ email: identifier }, { phone: identifier }] });
         if (!userData) throw new GraphQLError("User Not Found!")
@@ -45,7 +54,10 @@ const loginUser = async (_: unknown, { identifier, password }: LoginUserParams):
         const isPasswordCorrect = compare(password, userData.password)
         if (!isPasswordCorrect) throw new GraphQLError("Invalid Credentials!")
 
-        return userData;
+        const userToken = generateToken({ userId: userData._id });
+        if (!userToken) throw new GraphQLError("Error while generating token!");
+
+        return ({ user: userData, token: userToken });
 
     } catch (error: any) {
         throw new GraphQLError(error);
