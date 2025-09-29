@@ -4,9 +4,13 @@ import { getProducts } from "./queries/product";
 import { createCategory, editCategory, removeCategory } from "./mutations/category";
 import { getCategories, getCategory } from "./queries/category";
 import { getStatistics } from "./queries/statistics";
+import { getUser, getUsers } from "./queries/user";
 
 const resolvers = {
     Query: {
+        getUsers,
+        getUser,
+        
         getProducts,
 
         getCategories,
