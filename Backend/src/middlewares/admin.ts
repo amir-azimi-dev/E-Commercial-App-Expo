@@ -1,8 +1,9 @@
 import { GraphQLError } from "graphql";
-import isAuthorizedMiddleware from "./authorized";
 
 const isAdminMiddleware = (resolver: Function) => (parent: any, args: any, context: any, info: any) => {
-    isAuthorizedMiddleware(resolver)(parent, args, context, info);
+    if (!context.user) {
+        throw new GraphQLError("Unauthorized", { extensions: { code: "UNAUTHENTICATED", http: { status: 401 } } });
+    }
 
     if (!context.user.isAdmin) {
         throw new GraphQLError("Forbidden", {

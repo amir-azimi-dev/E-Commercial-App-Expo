@@ -3,6 +3,7 @@ import UserModel, { UserDocument } from "../../db/models/user";
 import { LoginUserParams, RegisterUserParams } from "../types/user";
 import { compare, hash } from "../../utils/hash";
 import { generateToken } from "../../utils/jwt";
+import mongoose from "mongoose";
 
 type AuthPayload = {
     user: UserDocument;
@@ -64,7 +65,21 @@ const loginUser = async (_: unknown, { identifier, password }: LoginUserParams):
     }
 };
 
+const removeUser = async (_: unknown, { id }: { id: string }): Promise<UserDocument> => {
+    try {
+        if (!mongoose.isValidObjectId(id)) throw new GraphQLError("Invalid entry!");
+        const removedUserData = await UserModel.findByIdAndDelete(id);
+        if (!removedUserData) throw new GraphQLError("User not found!");
+
+        return removedUserData;
+
+    } catch (error: any) {
+        throw new GraphQLError(error);
+    }
+};
+
 export {
     registerUser,
-    loginUser
+    loginUser,
+    removeUser
 };

@@ -1,6 +1,6 @@
 import isAuthorizedMiddleware from "../middlewares/authorized";
 import isAdminMiddleware from "../middlewares/admin";
-import { loginUser, registerUser } from "./mutations/user";
+import { loginUser, registerUser, removeUser } from "./mutations/user";
 import { createProduct, editProduct, removeProduct } from "./mutations/product";
 import { getProducts } from "./queries/product";
 import { createCategory, editCategory, removeCategory } from "./mutations/category";
@@ -24,6 +24,7 @@ const resolvers = {
     Mutation: {
         registerUser,
         loginUser,
+        removeUser: isAdminMiddleware(removeUser),
 
         createProduct: isAdminMiddleware(createProduct),
         editProduct: isAdminMiddleware(editProduct),
