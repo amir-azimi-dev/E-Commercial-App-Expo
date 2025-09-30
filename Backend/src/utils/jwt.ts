@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import UserModel, { UserDocument } from "../db/models/user";
 
 const generateToken = (payload: object | string): string | false => {
     try {
@@ -11,9 +12,10 @@ const generateToken = (payload: object | string): string | false => {
 };
 
 
-const decodeToken = (token: string): object | string | false => {
+const authorizeUser = async (token: string): Promise<UserDocument | null | false> => {
     try {
-        return jwt.verify(token, process.env.JWT_SECRET_KEY!);
+        const payload = jwt.verify(token, process.env.JWT_SECRET_KEY!) as { userId: string };
+        return UserModel.findById(payload.userId);
 
     } catch (error) {
         console.log(error);
@@ -23,4 +25,4 @@ const decodeToken = (token: string): object | string | false => {
 
 
 
-export { generateToken, decodeToken };
+export { generateToken, authorizeUser };

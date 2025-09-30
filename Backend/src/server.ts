@@ -6,6 +6,8 @@ import { expressMiddleware } from "@as-integrations/express5";
 import typeDefs from "./graphql/typeDefs";
 import resolvers from "./graphql/resolvers";
 import connectToDB from "./db/connection";
+import { authorizeUser } from "./utils/jwt";
+import { UserDocument } from "./db/models/user";
 
 dotenv.config();
 
@@ -20,7 +22,15 @@ app.use(express.urlencoded({ extended: false }));
 
 const startServer = async (): Promise<void> => {
     await server.start();
-    app.use("/graphql", expressMiddleware(server));
+    app.use("/graphql", expressMiddleware(server, {
+        context: async ({ req }) => {
+            const authHeader = req.headers.authorization || "";
+            const token = authHeader.replace("Bearer ", "");
+            
+            const user = await authorizeUser(token);
+            return user ? { user } : { user: null };
+        }
+    }));
 
     await connectToDB();
 
