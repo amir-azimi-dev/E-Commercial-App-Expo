@@ -7,6 +7,7 @@ import { createCategory, editCategory, removeCategory } from "./mutations/catego
 import { getCategories, getCategory } from "./queries/category";
 import { getStatistics } from "./queries/statistics";
 import { getUser, getUsers } from "./queries/user";
+import { placeOrder } from "./mutations/order";
 
 const resolvers = {
     Query: {
@@ -33,6 +34,8 @@ const resolvers = {
         createCategory: isAdminMiddleware(createCategory),
         editCategory: isAdminMiddleware(editCategory),
         removeCategory: isAdminMiddleware(removeCategory),
+
+        placeOrder: isAuthorizedMiddleware(placeOrder),
     }
 };
 
