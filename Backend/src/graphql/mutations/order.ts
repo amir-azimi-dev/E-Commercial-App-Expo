@@ -2,7 +2,7 @@ import { GraphQLError } from "graphql";
 import OrderModel, { OrderDocument } from "../../db/models/order";
 import ProductModel from "../../db/models/product";
 import OrderItemModel from "../../db/models/orderItem";
-import { PlaceOrderParams } from "../types/order";
+import { PlaceOrderParams, UpdateOrderStatusParams } from "../types/order";
 import mongoose from "mongoose";
 
 const placeOrder = async (_: unknown, { orderItems, shoppingAddress1, shoppingAddress2, phone, city, zip, country }: PlaceOrderParams, context: any): Promise<OrderDocument> => {
@@ -31,8 +31,42 @@ const placeOrder = async (_: unknown, { orderItems, shoppingAddress1, shoppingAd
         const newOrderData = (await OrderModel.create(data));
         await newOrderData.populate({ path: "orderItems", populate: { path: "product", populate: "category" } });
         await newOrderData.populate("customer");
-        
+
         return newOrderData;
+
+    } catch (error: any) {
+        throw new GraphQLError(error);
+    }
+};
+
+const updateOrderStatus = async (_: unknown, { id, newStatus }: UpdateOrderStatusParams): Promise<OrderDocument> => {
+    try {
+        if (!mongoose.isValidObjectId(id)) throw new GraphQLError("Invalid entry!");
+
+        const newOrderData = await OrderModel.findByIdAndUpdate(id, { status: newStatus }, { new: true });
+        if (!newOrderData) throw new GraphQLError("Order not found!");
+
+        await newOrderData.populate({ path: "orderItems", populate: { path: "product", populate: "category" } });
+        await newOrderData.populate("customer");
+
+        return newOrderData;
+
+    } catch (error: any) {
+        throw new GraphQLError(error);
+    }
+};
+
+const removeOrder = async (_: unknown, { id }: { id: string }): Promise<OrderDocument> => {
+    try {
+        if (!mongoose.isValidObjectId(id)) throw new GraphQLError("Invalid entry!");
+
+        const removedOrderData = await OrderModel.findByIdAndDelete(id);
+        if (!removedOrderData) throw new GraphQLError("Order not found!");
+
+        await removedOrderData.populate({ path: "orderItems", populate: { path: "product", populate: "category" } });
+        await removedOrderData.populate("customer");
+
+        return removedOrderData;
 
     } catch (error: any) {
         throw new GraphQLError(error);
@@ -41,4 +75,6 @@ const placeOrder = async (_: unknown, { orderItems, shoppingAddress1, shoppingAd
 
 export {
     placeOrder,
+    updateOrderStatus,
+    removeOrder
 };

@@ -8,6 +8,11 @@ type PlaceOrderParams = {
     country: string;
 };
 
+type UpdateOrderStatusParams = {
+    id: string;
+    newStatus: string;
+};
+
 const OrderTypeDef = `#graphql
     type Order {
         _id: ID!,
@@ -39,5 +44,5 @@ const OrderTypeDef = `#graphql
     }
 `;
 
-export type { PlaceOrderParams };
+export type { PlaceOrderParams, UpdateOrderStatusParams };
 export { OrderTypeDef };
