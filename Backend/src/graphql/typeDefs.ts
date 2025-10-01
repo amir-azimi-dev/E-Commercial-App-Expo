@@ -26,6 +26,7 @@ const typeDefs = `#graphql
         getStatistics: Statistics!,
 
         getOrders: [Order!]!,
+        getOrder(id: ID!): Order,
     }
 
     type Mutation {
