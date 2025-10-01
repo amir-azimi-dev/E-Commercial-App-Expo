@@ -24,6 +24,8 @@ const typeDefs = `#graphql
         getCategory(id: ID!): Category,
 
         getStatistics: Statistics!,
+
+        getOrders: [Order!]!,
     }
 
     type Mutation {

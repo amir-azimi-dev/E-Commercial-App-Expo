@@ -31,7 +31,7 @@ const placeOrder = async (_: unknown, { orderItems, shoppingAddress1, shoppingAd
         const newOrderData = (await OrderModel.create(data));
         await newOrderData.populate({ path: "orderItems", populate: { path: "product", populate: "category" } });
         await newOrderData.populate("customer");
-        console.log(newOrderData.orderItems)
+        
         return newOrderData;
 
     } catch (error: any) {
