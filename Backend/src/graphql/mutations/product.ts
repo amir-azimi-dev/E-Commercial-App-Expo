@@ -40,7 +40,8 @@ const createProduct = async (
             reviewsCount,
             isFeatured
         };
-        const newProductData = (await ProductModel.create(data)).populate("category");
+        const newProductData = (await ProductModel.create(data));
+        await newProductData.populate("category");
 
         return newProductData;
 

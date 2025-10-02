@@ -7,7 +7,8 @@ import typeDefs from "./graphql/typeDefs";
 import resolvers from "./graphql/resolvers";
 import connectToDB from "./db/connection";
 import { authorizeUser } from "./utils/jwt";
-import { UserDocument } from "./db/models/user";
+import upload from "./middlewares/multer";
+import path from "path";
 
 dotenv.config();
 
@@ -19,6 +20,20 @@ const port = process.env.PORT || 3000;
 app.use(cors<CorsRequest>());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use("/uploads", express.static(path.join(process.cwd(), "public", "uploads")));
+
+app.post(
+    "/upload",
+    upload.fields([{ name: "image", maxCount: 1 }, { name: "images", maxCount: 10 }]),
+    (req, res) => {
+        const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+
+        const imageFile = files["image"]?.[0]?.filename || null;
+        const otherImages = files["images"]?.map(file => file.filename) || [];
+
+        res.json({ image: imageFile, images: otherImages });
+    }
+);
 
 const startServer = async (): Promise<void> => {
     await server.start();
@@ -26,7 +41,7 @@ const startServer = async (): Promise<void> => {
         context: async ({ req }) => {
             const authHeader = req.headers.authorization || "";
             const token = authHeader.replace("Bearer ", "");
-            
+
             const user = await authorizeUser(token);
             return user ? { user } : { user: null };
         }
