@@ -3,6 +3,7 @@ import ProductModel, { ProductDocument } from "../../db/models/product";
 import CategoryModel from "../../db/models/category";
 import { CreateProductParams } from "../types/product";
 import mongoose from "mongoose";
+import { removeFile } from "../../utils/file";
 
 const createProduct = async (
     _: unknown,
@@ -88,8 +89,24 @@ const editProduct = async (
             reviewsCount,
             isFeatured
         };
+
+        !image && Reflect.deleteProperty(data, "image");
+        !images?.length && Reflect.deleteProperty(data, "images");
+
+        const oldProductData = await ProductModel.findById(id, { image: 1, images: 1 });
         const newProductData = await ProductModel.findByIdAndUpdate(id, data, { new: true }).populate("category");
-        if (!newProductData) throw new GraphQLError("Product not found!");
+
+        if (!oldProductData || !newProductData) throw new GraphQLError("Product not found!");
+
+        if (image && oldProductData.image) {
+            console.log(oldProductData.image)
+            await removeFile(oldProductData.image);
+        }
+
+        if (images?.length && oldProductData.images.length) {
+            console.log(images)
+            await Promise.all(oldProductData.images.map(removeFile));
+        }
 
         return newProductData;
 
@@ -104,6 +121,14 @@ const removeProduct = async (_: unknown, { id }: { id: string }): Promise<Produc
 
         const removedProduct = await ProductModel.findByIdAndDelete(id).populate("category");
         if (!removedProduct) throw new GraphQLError("Product not found!");
+
+        if (removedProduct.image) {
+            await removeFile(removedProduct.image);
+        }
+
+        if (removedProduct.images.length) {
+            await Promise.all(removedProduct.images.map(removeFile));
+        }
 
         return removedProduct;
 

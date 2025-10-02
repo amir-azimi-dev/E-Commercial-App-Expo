@@ -14,7 +14,7 @@ const resolvers = {
     Query: {
         getUsers: isAdminMiddleware(getUsers),
         getUser: isAdminMiddleware(getUser),
-        
+
         getProducts,
 
         getCategories,
