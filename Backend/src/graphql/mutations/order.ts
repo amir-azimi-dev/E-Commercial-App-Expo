@@ -66,11 +66,17 @@ const removeOrder = async (_: unknown, { id }: { id: string }): Promise<OrderDoc
         await removedOrderData.populate({ path: "orderItems", populate: { path: "product", populate: "category" } });
         await removedOrderData.populate("customer");
 
+        await removeRelatedOrderItems(removedOrderData.orderItems.map(item => item._id.toString()));
+
         return removedOrderData;
 
     } catch (error: any) {
         throw new GraphQLError(error);
     }
+};
+
+const removeRelatedOrderItems = async (orderItemsIds: string[]): Promise<void> => {
+    orderItemsIds.length && await OrderItemModel.deleteMany({ _id: { $in: orderItemsIds } });
 };
 
 export {
