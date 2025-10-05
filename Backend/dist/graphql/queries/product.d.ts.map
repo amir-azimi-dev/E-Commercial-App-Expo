@@ -1,0 +1,1 @@
+{"version":3,"file":"product.d.ts","sourceRoot":"","sources":["../../../src/graphql/queries/product.ts"],"names":[],"mappings":"AACA,OAAqB,EAAE,eAAe,EAAE,MAAM,yBAAyB,CAAC;AACxE,OAAO,EAAE,iBAAiB,EAAE,MAAM,kBAAkB,CAAC;AAGrD,QAAA,MAAM,WAAW,GAAU,GAAG,OAAO,EAAE,6CAA6C,iBAAiB,KAAG,OAAO,CAAC,eAAe,EAAE,CAoBhI,CAAC;AAEF,OAAO,EACH,WAAW,EACd,CAAC"}
