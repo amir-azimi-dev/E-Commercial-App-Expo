@@ -1,11 +1,11 @@
 import { createStaticNavigation, StaticParamList } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import Landing from 'screens/user/landing';
+import Products from 'screens/user/products';
 
 const Stack = createStackNavigator({
   screens: {
-    Home: {
-      screen: Landing,
+    Products: {
+      screen: Products,
     },
   },
 });
