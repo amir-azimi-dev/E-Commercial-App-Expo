@@ -3,6 +3,7 @@ import { FlatList, Text, View } from "react-native";
 import { Product } from "../../../../types";
 import ProductCard from "../../../modules/user/ProductCard";
 import { useNavigation } from "@react-navigation/native";
+import Banners from "./Banners";
 
 const testProducts = [
     {
@@ -120,14 +121,17 @@ const Products = () => {
         setProducts(testProducts);
         setFilteredProducts(testProducts);
 
-        return () => setProducts([]);
-
+        return () => {
+            setProducts([]);
+            setFilteredProducts([]);
+            setSearchedTitle("");
+        };
     }, []);
 
     useEffect(() => {
         if (!products.length) return;
 
-        !searchedTitle.trim() && setFilteredProducts(products);
+        if (!searchedTitle.trim()) return setFilteredProducts(products);
 
         const filteredProduct = products.filter(product => product.title.match(new RegExp(searchedTitle.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i")));
         setFilteredProducts(filteredProduct);
@@ -148,6 +152,18 @@ const Products = () => {
         <View>
             {!filteredProducts.length && (
                 <Text className="mt-10 font-bold text-2xl text-center">No Product Found!</Text>
+            )}
+
+            {!searchedTitle.trim() && (
+                <Banners
+                    banners={[
+                        "5363044a-3434-4ea9-9f1a-31a5f8a8f51b-1759759479362.webp",
+                        "932d7441-cc5d-4573-9369-286ee6f67afe-1759759479362.jpg",
+                        "61b986c9-3d8f-45de-8c37-19c7eb53d4c9-1759759475896.jpg",
+                        "5363044a-3434-4ea9-9f1a-31a5f8a8f51b-1759759479362.webp",
+                        "932d7441-cc5d-4573-9369-286ee6f67afe-1759759479362.jpg"
+                    ]}
+                />
             )}
 
             <FlatList
