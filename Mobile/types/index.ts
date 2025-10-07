@@ -7,15 +7,7 @@ type Product = {
     images: string[];
     brand: string;
     price: number;
-    category: {
-        _id: string;
-        title: string;
-        color: string;
-        icon: string;
-        image: string;
-        createdAt: string;
-        updatedAt: string;
-    };
+    category: Category;
     countInStock: number;
     rating: number;
     reviewsCount: number;
@@ -24,6 +16,17 @@ type Product = {
     updatedAt: string;
 };
 
+type Category = {
+    _id: string;
+    title: string;
+    color: string;
+    icon: string;
+    image: string;
+    createdAt: string;
+    updatedAt: string;
+};
+
 export {
-    Product
+    Product,
+    Category
 };

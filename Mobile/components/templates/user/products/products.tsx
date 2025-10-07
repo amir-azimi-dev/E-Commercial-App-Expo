@@ -4,6 +4,7 @@ import { Product } from "../../../../types";
 import ProductCard from "../../../modules/user/ProductCard";
 import { useNavigation } from "@react-navigation/native";
 import Banners from "./Banners";
+import FilterByCategory from "./FilterByCategory";
 
 const testProducts = [
     {
@@ -115,6 +116,7 @@ const Products = () => {
     const [products, setProducts] = useState<Product[]>([]);
     const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
     const [searchedTitle, setSearchedTitle] = useState<string>("");
+    const [filteredCategories, setFilteredCategories] = useState<string[]>([]);
     const navigation = useNavigation();
 
     useEffect(() => {
@@ -165,6 +167,8 @@ const Products = () => {
                     ]}
                 />
             )}
+
+            <FilterByCategory selectedCategories={filteredCategories} onSelectCategory={setFilteredCategories} />
 
             <FlatList
                 data={filteredProducts}
