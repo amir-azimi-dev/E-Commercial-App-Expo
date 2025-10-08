@@ -3,7 +3,7 @@ import { Product } from "../../../types";
 
 const ProductCard = ({ title, image, price, countInStock }: Product) => {
     return (
-        <View className="flex-1 pt-20 pb-2">
+        <View className="flex-1 pt-8 pb-2">
             <View className="items-center p-4 pt-36 bg-white rounded-lg" style={styles.container}>
                 <Image
                     source={image ? { uri: `${process.env.EXPO_PUBLIC_STATIC_BASE_URL}/${image}` } : require("../../../assets/box.png")}

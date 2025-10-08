@@ -115,9 +115,20 @@ const testProducts = [
 const Products = () => {
     const [products, setProducts] = useState<Product[]>([]);
     const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+    const [visibleProducts, setVisibleProducts] = useState<Product[]>([]);
     const [searchedTitle, setSearchedTitle] = useState<string>("");
-    const [filteredCategories, setFilteredCategories] = useState<string[]>([]);
+    const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
     const navigation = useNavigation();
+
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerSearchBarOptions: {
+                placeholder: 'Search...',
+                onChangeText: (event: { nativeEvent: { text: string } }) => setSearchedTitle(event.nativeEvent.text)
+            },
+        });
+
+    }, []);
 
     useEffect(() => {
         setProducts(testProducts);
@@ -126,7 +137,9 @@ const Products = () => {
         return () => {
             setProducts([]);
             setFilteredProducts([]);
+            setVisibleProducts([]);
             setSearchedTitle("");
+            setSelectedCategories([]);
         };
     }, []);
 
@@ -140,22 +153,17 @@ const Products = () => {
 
     }, [searchedTitle, products]);
 
-    useLayoutEffect(() => {
-        navigation.setOptions({
-            headerSearchBarOptions: {
-                placeholder: 'Search...',
-                onChangeText: (event: { nativeEvent: { text: string } }) => setSearchedTitle(event.nativeEvent.text)
-            },
-        });
+    useEffect(() => {
+        if (!filteredProducts.length) return setVisibleProducts([]);
+        if (!selectedCategories.length) return setVisibleProducts(filteredProducts);
 
-    }, []);
+        const visibleProducts = filteredProducts.filter(product => selectedCategories.includes(product.category._id));
+        setVisibleProducts(visibleProducts);
+
+    }, [selectedCategories, filteredProducts]);
 
     return (
-        <View>
-            {!filteredProducts.length && (
-                <Text className="mt-10 font-bold text-2xl text-center">No Product Found!</Text>
-            )}
-
+        <View className="flex-1 pb-4">
             {!searchedTitle.trim() && (
                 <Banners
                     banners={[
@@ -168,15 +176,22 @@ const Products = () => {
                 />
             )}
 
-            <FilterByCategory selectedCategories={filteredCategories} onSelectCategory={setFilteredCategories} />
+            <View className="mb-8">
+                <FilterByCategory selectedCategories={selectedCategories} onSelectCategory={setSelectedCategories} />
+            </View>
+
+            {!visibleProducts.length && (
+                <Text className="font-bold text-2xl text-center">No Product Found!</Text>
+            )}
 
             <FlatList
-                data={filteredProducts}
+                data={visibleProducts}
                 renderItem={({ item }) => <ProductCard {...item} />}
                 keyExtractor={item => item._id}
                 contentContainerStyle={{ rowGap: 10 }}
                 columnWrapperStyle={{ columnGap: 10 }}
                 numColumns={2}
+                className="flex-1 -mx-4 my-3 px-4"
             />
         </View>
     );
