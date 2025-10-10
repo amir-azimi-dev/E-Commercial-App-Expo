@@ -16,6 +16,8 @@ type Product = {
     updatedAt: string;
 };
 
+export type ProductPreview = Pick<Product, "_id" | "title" | "image" | "price" | "countInStock">;
+
 type Category = {
     _id: string;
     title: string;

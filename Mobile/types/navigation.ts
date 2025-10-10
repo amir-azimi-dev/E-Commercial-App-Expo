@@ -9,7 +9,7 @@ type HomeStackParamList = {
 
 type TabsParamList = {
     HomeStack: undefined;
-    Cart: undefined;
+    Basket: undefined;
     Admin: undefined;
     User: undefined;
 };

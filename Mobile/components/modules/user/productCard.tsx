@@ -1,10 +1,23 @@
 import { Button, Image, Platform, Pressable, StyleSheet, Text, View } from "react-native";
-import { Product } from "../../../types";
+import { ProductPreview } from "../../../types";
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "types/navigation";
+import { useAppDispatch, useAppSelector } from "redux/store";
+import { addOne, removeOne } from "redux/reducers/basket";
 
-const ProductCard = ({ _id, title, image, price, countInStock }: Product) => {
+const ProductCard = ({ _id, title, image, price, countInStock }: ProductPreview) => {
+    const basket = useAppSelector(state => state.basket).basket;
+    const dispatch = useAppDispatch();
+
     const navigation = useNavigation<HomeScreenProps>();
+
+    const addToBasketHandler = (): void => {
+        dispatch(addOne({ _id, title, image, price, quantity: 1, countInStock }));
+    };
+
+    const removeFromBasketHandler = (): void => {
+        dispatch(removeOne(_id));
+    };
 
     const navigateToProductDetailsHandler = (): void => {
         navigation.navigate("ProductDetails", { id: _id });
@@ -27,7 +40,11 @@ const ProductCard = ({ _id, title, image, price, countInStock }: Product) => {
 
                     {!!countInStock ? (
                         <View className={Platform.OS !== "ios" ? "mt-1" : ""}>
-                            <Button title="Add to Cart" color="green" />
+                            {basket.some(item => item._id === _id) ? (
+                                <Button title="Remove" color="red" onPress={removeFromBasketHandler} />
+                            ) : (
+                                <Button title="Add to Cart" color="green" onPress={addToBasketHandler} />
+                            )}
                         </View>
                     ) : (
                         <Text className="font-bold text-red-500">Unavailable</Text>

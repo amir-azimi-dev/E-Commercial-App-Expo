@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { HomeStackParamList, TabsParamList } from 'types/navigation';
 import ProductsScreen from 'screens/user/products';
 import SingleProductsScreen from 'screens/user/single-product';
+import BasketScreen from 'screens/user/basket';
 import { FontAwesome } from "@expo/vector-icons";
 
 
@@ -41,8 +42,8 @@ const Tabs = createBottomTabNavigator<TabsParamList>({
         headerShown: false
       },
     },
-    Cart: {
-      screen: ProductsScreen,
+    Basket: {
+      screen: BasketScreen,
       options: {
         tabBarIcon: ({ color, size }) => <FontAwesome name="shopping-basket" color={color} size={size} />
       },
