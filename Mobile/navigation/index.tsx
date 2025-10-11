@@ -6,6 +6,26 @@ import ProductsScreen from 'screens/user/products';
 import SingleProductsScreen from 'screens/user/single-product';
 import BasketScreen from 'screens/user/basket';
 import { FontAwesome } from "@expo/vector-icons";
+import { useAppSelector } from 'redux/store';
+import { Text, View } from 'react-native';
+
+const BasketIcon = ({ color, size }: { color: string; size: number }) => {
+  const basketItemsCount = useAppSelector(state => state.basket.basket.length);
+
+  return (
+    <View className="relative">
+      <FontAwesome name="shopping-basket" color={color} size={size} />
+      {basketItemsCount > 0 && (
+        <View
+        className="absolute -top-1.5 -right-2 min-w-5 h-5 justify-center items-center bg-red-500 rounded-full aspect-square">
+          <Text className="font-bold text-white text-xs">
+            {basketItemsCount}
+          </Text>
+        </View>
+      )}
+    </View>
+  );
+}
 
 
 const HomeStack = createStackNavigator<HomeStackParamList>({
@@ -45,7 +65,7 @@ const Tabs = createBottomTabNavigator<TabsParamList>({
     Basket: {
       screen: BasketScreen,
       options: {
-        tabBarIcon: ({ color, size }) => <FontAwesome name="shopping-basket" color={color} size={size} />
+        tabBarIcon: ({ color, size }) => <BasketIcon color={color} size={size} />
       },
     },
     Admin: {

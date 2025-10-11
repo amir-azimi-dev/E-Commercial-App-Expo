@@ -17,7 +17,6 @@ export default function App() {
   return (
     <Provider store={store}>
       <Navigation theme={theme} />
-
     </Provider>
   );
 }
