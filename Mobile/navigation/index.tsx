@@ -1,13 +1,17 @@
-import { createStaticNavigation, RouteProp, StaticParamList } from '@react-navigation/native';
+import { createStaticNavigation, StaticParamList } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { HomeStackParamList, TabsParamList } from 'types/navigation';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { BasketStackParamList, HomeStackParamList, TabsParamList, TopTabsParamList } from 'types/navigation';
 import ProductsScreen from 'screens/user/products';
 import SingleProductsScreen from 'screens/user/single-product';
 import BasketScreen from 'screens/user/basket';
 import { FontAwesome } from "@expo/vector-icons";
-import { useAppSelector } from 'redux/store';
 import { Text, View } from 'react-native';
+import { useAppSelector } from 'redux/store';
+import ShippingScreen from 'screens/user/checkout/shipping';
+import PaymentScreen from 'screens/user/checkout/payment';
+import ConfirmScreen from 'screens/user/checkout/confirm';
 
 const BasketIcon = ({ color, size }: { color: string; size: number }) => {
   const basketItemsCount = useAppSelector(state => state.basket.basket.length);
@@ -27,6 +31,34 @@ const BasketIcon = ({ color, size }: { color: string; size: number }) => {
   );
 }
 
+const CheckoutTopTabs = createMaterialTopTabNavigator<TopTabsParamList>({
+  initialRouteName: "Shipping",
+
+  screens: {
+    Shipping: {
+      screen: ShippingScreen
+    },
+    Payment: {
+      screen: PaymentScreen
+    },
+    Confirm: {
+      screen: ConfirmScreen
+    }
+  }
+});
+
+const BasketStack = createStackNavigator<BasketStackParamList>({
+  initialRouteName: "Basket",
+
+  screens: {
+    Basket: {
+      screen: BasketScreen
+    },
+    Checkout: {
+      screen: CheckoutTopTabs
+    }
+  }
+});
 
 const HomeStack = createStackNavigator<HomeStackParamList>({
   initialRouteName: "Home",
@@ -62,10 +94,11 @@ const Tabs = createBottomTabNavigator<TabsParamList>({
         headerShown: false
       },
     },
-    Basket: {
-      screen: BasketScreen,
+    BasketStack: {
+      screen: BasketStack,
       options: {
-        tabBarIcon: ({ color, size }) => <BasketIcon color={color} size={size} />
+        tabBarIcon: ({ color, size }) => <BasketIcon color={color} size={size} />,
+        headerShown: false
       },
     },
     Admin: {

@@ -1,6 +1,8 @@
-import ProductCard from "components/modules/user/ProductCard";
 import { useEffect, useState } from "react";
 import { Alert, Button, FlatList, Image, Text, View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { BasketScreenProps } from "types/navigation";
+import ProductCard from "components/modules/user/ProductCard";
 import { clearBasket } from "redux/reducers/basket";
 import { useAppDispatch, useAppSelector } from "redux/store";
 
@@ -9,6 +11,8 @@ const BasketScreen = () => {
 
     const basket = useAppSelector(state => state.basket).basket;
     const dispatch = useAppDispatch();
+
+    const navigation = useNavigation<BasketScreenProps>();
 
     useEffect(() => {
         const totalPrice = basket.reduce<number>((acc, current) => acc + (current.price * current.quantity), 0);
@@ -33,7 +37,7 @@ const BasketScreen = () => {
             "Are you sure you want to proceed?",
             [
                 { text: "Discard", style: "cancel" },
-                { text: "Purchase", style: "default", onPress: () => dispatch(clearBasket()) }
+                { text: "Checkout", style: "default", onPress: () => navigation.navigate("Checkout") }
             ]
         );
     }
@@ -59,7 +63,7 @@ const BasketScreen = () => {
 
                     <View className="flex-row justify-between items-center mb-1.5 py-2 border-neutral-500 border-t">
                         <Text className="font-semibold text-neutral-500 text-xl">Total Price: ${totalPrice.toLocaleString()}</Text>
-                        <Button title="Purchase" color="#0dc70d" onPress={checkoutHandler} />
+                        <Button title="Checkout" color="#0dc70d" onPress={checkoutHandler} />
                     </View>
                 </>
             ) : (
