@@ -5,7 +5,7 @@ import { HomeScreenProps } from "types/navigation";
 import { useAppDispatch, useAppSelector } from "redux/store";
 import { addOne, removeOne } from "redux/reducers/basket";
 
-const ProductCard = ({ _id, title, image, price, countInStock }: ProductPreview) => {
+const ProductCard = ({ _id, title, image, price, countInStock, disableNavigation }: ProductPreview & { disableNavigation?: boolean }) => {
     const basket = useAppSelector(state => state.basket).basket;
     const dispatch = useAppDispatch();
 
@@ -20,6 +20,7 @@ const ProductCard = ({ _id, title, image, price, countInStock }: ProductPreview)
     };
 
     const navigateToProductDetailsHandler = (): void => {
+        if (disableNavigation) return;
         navigation.navigate("ProductDetails", { id: _id });
     };
 
@@ -27,7 +28,7 @@ const ProductCard = ({ _id, title, image, price, countInStock }: ProductPreview)
         <Pressable onPress={navigateToProductDetailsHandler} className="flex-1 pt-8 pb-2">
             {({ pressed }) => (
                 <View
-                    className={`items-center p-4 pt-36 bg-white rounded-lg ${pressed && "opacity-70"}`}
+                    className={`items-center p-4 pt-36 bg-white rounded-lg ${(pressed && !disableNavigation) && "opacity-70"}`}
                     style={styles.container}
                 >
                     <Image
