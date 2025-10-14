@@ -1,6 +1,7 @@
-import { RouteProp } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { ShippingState } from 'screens/user/checkout/shipping';
+import { RouteProp } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { ShippingState } from "screens/user/checkout/shipping";
+import { PaymentData } from "screens/user/checkout/payment";
 
 
 type HomeStackParamList = {
@@ -23,17 +24,20 @@ type BasketStackParamList = {
 type TopTabsParamList = {
     Shipping: undefined;
     Payment: ShippingState;
-    Confirm: undefined;
+    Confirm: ShippingState & PaymentData;
 };
 
 type HomeScreenProps = NativeStackNavigationProp<HomeStackParamList, "Home">;
 type ProductDetailsScreenProps = NativeStackNavigationProp<HomeStackParamList, "ProductDetails">;
 type BasketScreenProps = NativeStackNavigationProp<BasketStackParamList, "Basket">;
+type ShippingTabScreenProps = NativeStackNavigationProp<TopTabsParamList, "Shipping">;
 type PaymentTabScreenProps = NativeStackNavigationProp<TopTabsParamList, "Payment">;
+type ConfirmTabScreenProps = NativeStackNavigationProp<TopTabsParamList, "Confirm">;
 
 type HomeScreenRouteProps = RouteProp<HomeStackParamList, "Home">;
 type ProductDetailsScreenRouteProps = RouteProp<HomeStackParamList, "ProductDetails">;
 type PaymentTabScreenRouteProps = RouteProp<TopTabsParamList, "Payment">;
+type ConfirmTabScreenRouteProps = RouteProp<TopTabsParamList, "Confirm">;
 
 export {
     HomeStackParamList,
@@ -43,9 +47,12 @@ export {
     HomeScreenProps,
     ProductDetailsScreenProps,
     BasketScreenProps,
+    ShippingTabScreenProps,
     PaymentTabScreenProps,
+    ConfirmTabScreenProps,
 
     HomeScreenRouteProps,
     ProductDetailsScreenRouteProps,
-    PaymentTabScreenRouteProps
+    PaymentTabScreenRouteProps,
+    ConfirmTabScreenRouteProps
 };

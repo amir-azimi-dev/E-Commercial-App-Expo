@@ -1,7 +1,7 @@
 import { useReducer } from "react";
 import { Button, Platform, Text, TextInput, View, ScrollView, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { PaymentTabScreenProps } from "types/navigation";
+import { ShippingTabScreenProps } from "types/navigation";
 import { Picker } from '@react-native-picker/picker';
 import countries from "db/countries";
 
@@ -54,7 +54,7 @@ const reducer = (state: ShippingState, action: { type: ActionTypes, payload: str
 const ShippingScreen = () => {
     const [formState, dispatch] = useReducer(reducer, initialState);
 
-    const navigation = useNavigation<PaymentTabScreenProps>();
+    const navigation = useNavigation<ShippingTabScreenProps>();
 
     const changeInputHandler = (field: ActionTypes, newValue: string) => {
         dispatch({ type: field, payload: newValue });
