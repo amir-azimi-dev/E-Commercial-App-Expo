@@ -44,7 +44,7 @@ const Banners: React.FC<BannersProps> = ({ banners }) => {
                 renderItem={({ item }) => (
                     <View className="w-full flex-1">
                         <Image
-                            source={{ uri: `${Platform.select({ios: process.env.EXPO_PUBLIC_STATIC_BASE_URL, android: process.env.EXPO_PUBLIC_ANDROID_STATIC_BASE_URL})}/${item}` }}
+                            source={{ uri: `${Platform.select({ ios: process.env.EXPO_PUBLIC_STATIC_BASE_URL, android: process.env.EXPO_PUBLIC_ANDROID_STATIC_BASE_URL })}/${item}` }}
                             className="w-full h-full"
                             resizeMode="cover"
                         />

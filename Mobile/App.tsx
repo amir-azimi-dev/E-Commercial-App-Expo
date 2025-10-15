@@ -9,14 +9,17 @@ import 'react-native-gesture-handler';
 import Navigation from './navigation';
 import { Provider } from 'react-redux';
 import store from 'redux/store';
+import ApolloProvider from 'graphql/ApolloProvider';
 
 export default function App() {
   const colorScheme = useColorScheme();
   const theme = useMemo(() => (colorScheme === 'dark' ? DarkTheme : DefaultTheme), [colorScheme]);
 
   return (
-    <Provider store={store}>
-      <Navigation theme={theme} />
-    </Provider>
+    <ApolloProvider>
+      <Provider store={store}>
+        <Navigation theme={theme} />
+      </Provider>
+    </ApolloProvider>
   );
 }

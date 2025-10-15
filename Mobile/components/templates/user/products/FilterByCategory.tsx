@@ -1,28 +1,6 @@
-import { Dispatch, useEffect, useState } from "react";
-import { Pressable, ScrollView, Text, View } from "react-native";
-import { Category } from "../../../../types";
-
-const testCategories = [
-    {
-        "_id": "68d683782f2799fb2c870d57",
-        "title": "computer",
-        "color": "#444",
-        "icon": "icon-computer",
-        "image": "",
-        "createdAt": "2025-09-26T12:13:44.401Z",
-        "updatedAt": "2025-09-26T12:57:12.840Z"
-    },
-    {
-        "_id": "68d683782f2799fb2c870d58",
-        "title": "computer 2",
-        "color": "#00ff00",
-        "icon": "icon-computer",
-        "image": "",
-        "createdAt": "2025-09-26T12:13:44.401Z",
-        "updatedAt": "2025-09-26T12:57:12.840Z"
-    }
-];
-
+import { Dispatch } from "react";
+import { ActivityIndicator, Pressable, ScrollView, Text, View } from "react-native";
+import useCategories from "graphql/queries/useCategories";
 const allCategory = {
     _id: "all",
     title: "All",
@@ -35,14 +13,7 @@ type FilterByCategoryPropsTypes = {
 };
 
 const FilterByCategory = ({ selectedCategories, onSelectCategory }: FilterByCategoryPropsTypes) => {
-    const [categories, setCategories] = useState<Category[]>([]);
-
-    useEffect(() => {
-        setCategories(testCategories);
-
-        return () => setCategories([]);
-
-    }, []);
+    const { data: categories, loading, error } = useCategories();
 
     const getIsSelectedCategory = (categoryId: string): boolean => {
         return (categoryId === "all" && !selectedCategories.length) || (selectedCategories.includes(categoryId));
@@ -60,6 +31,15 @@ const FilterByCategory = ({ selectedCategories, onSelectCategory }: FilterByCate
         onSelectCategory([...selectedCategories, categoryId]);
     };
 
+    if (loading) return (
+        <View className="mt-8 p-4 bg-white">
+            <ActivityIndicator size="large" />
+        </View>
+    );
+    if (error) return <Text>Error While Fetching Data!</Text>;
+
+    const categoriesData = categories?.getCategories || [];
+
     return (
         <ScrollView
             className="-mx-5 mt-8 p-4 bg-white"
@@ -67,7 +47,7 @@ const FilterByCategory = ({ selectedCategories, onSelectCategory }: FilterByCate
             horizontal
         >
             <View className="flex-row items-center gap-x-1 my-auto">
-                {[allCategory, ...categories].map(category => (
+                {[allCategory, ...categoriesData].map(category => (
                     <Pressable
                         key={category._id}
                         onPress={() => selectCategoryHandler(category._id)}
