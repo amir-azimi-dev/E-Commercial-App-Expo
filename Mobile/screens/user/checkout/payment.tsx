@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Alert, Button, Platform, ScrollView, Text, View } from "react-native";
+import { Alert, Platform, ScrollView, Text, View } from "react-native";
+import Button from "components/modules/Button";
 import { useIsFocused, useNavigation, useRoute } from "@react-navigation/native";
 import { PaymentTabScreenProps, PaymentTabScreenRouteProps } from "types/navigation";
 import { Picker } from "@react-native-picker/picker";

@@ -1,4 +1,5 @@
-import { Button, Image, Platform, Pressable, StyleSheet, Text, View } from "react-native";
+import { Image, Platform, Pressable, StyleSheet, Text, View } from "react-native";
+import Button from "../Button";
 import { ProductPreview } from "../../../types";
 import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "types/navigation";
@@ -32,7 +33,7 @@ const ProductCard = ({ _id, title, image, price, countInStock, disableNavigation
                     style={styles.container}
                 >
                     <Image
-                        source={image ? { uri: `${process.env.EXPO_PUBLIC_STATIC_BASE_URL}/${image}` } : require("~/../assets/box.png")}
+                        source={image ? { uri: `${Platform.select({ ios: process.env.EXPO_PUBLIC_STATIC_BASE_URL, android: process.env.EXPO_PUBLIC_ANDROID_STATIC_BASE_URL })}/${image}` } : require("~/../assets/box.png")}
                         className="absolute -top-8 max-w-full h-40 aspect-video"
                         resizeMode="contain"
                     />

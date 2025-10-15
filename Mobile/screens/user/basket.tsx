@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Alert, Button, FlatList, Image, Text, View } from "react-native";
+import { Alert, FlatList, Image, Text, View } from "react-native";
+import Button from "components/modules/Button";
 import { useNavigation } from "@react-navigation/native";
 import { BasketScreenProps } from "types/navigation";
 import ProductCard from "components/modules/user/ProductCard";

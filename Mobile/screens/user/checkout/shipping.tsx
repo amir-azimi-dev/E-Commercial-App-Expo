@@ -1,5 +1,6 @@
 import { useReducer } from "react";
-import { Button, Platform, Text, TextInput, View, ScrollView, Alert } from "react-native";
+import { Platform, Text, TextInput, View, ScrollView, Alert } from "react-native";
+import Button from "components/modules/Button";
 import { useNavigation } from "@react-navigation/native";
 import { ShippingTabScreenProps } from "types/navigation";
 import { Picker } from '@react-native-picker/picker';
