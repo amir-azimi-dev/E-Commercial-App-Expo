@@ -2,16 +2,19 @@ import { createStaticNavigation, StaticParamList } from '@react-navigation/nativ
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { BasketStackParamList, HomeStackParamList, TabsParamList, TopTabsParamList } from 'types/navigation';
+import { BasketStackParamList, HomeStackParamList, UserStackParamList, TabsParamList, TopTabsParamList } from 'types/navigation';
+import { Text, View } from 'react-native';
+import { FontAwesome } from "@expo/vector-icons";
+import { useAppSelector } from 'redux/store';
 import ProductsScreen from 'screens/user/products';
 import SingleProductsScreen from 'screens/user/single-product';
 import BasketScreen from 'screens/user/basket';
-import { FontAwesome } from "@expo/vector-icons";
-import { Text, View } from 'react-native';
-import { useAppSelector } from 'redux/store';
 import ShippingScreen from 'screens/user/checkout/shipping';
 import PaymentScreen from 'screens/user/checkout/payment';
 import ConfirmScreen from 'screens/user/checkout/confirm';
+import ProfileScreen from 'screens/user/profile';
+import LoginScreen from 'screens/user/login';
+import RegisterScreen from 'screens/user/register';
 
 const BasketIcon = ({ color, size }: { color: string; size: number }) => {
   const basketItemsCount = useAppSelector(state => state.basket.basket.length);
@@ -21,7 +24,7 @@ const BasketIcon = ({ color, size }: { color: string; size: number }) => {
       <FontAwesome name="shopping-basket" color={color} size={size} />
       {basketItemsCount > 0 && (
         <View
-        className="absolute -top-1.5 -right-2 min-w-5 h-5 justify-center items-center bg-red-500 rounded-full aspect-square">
+          className="absolute -top-1.5 -right-2 min-w-5 h-5 justify-center items-center bg-red-500 rounded-full aspect-square">
           <Text className="font-bold text-white text-xs">
             {basketItemsCount}
           </Text>
@@ -57,6 +60,24 @@ const BasketStack = createStackNavigator<BasketStackParamList>({
     Checkout: {
       screen: CheckoutTopTabs
     }
+  }
+});
+
+
+const UserStack = createStackNavigator<UserStackParamList>({
+  initialRouteName: "Login",
+
+  screens: {
+    Profile: {
+      screen: ProfileScreen
+    },
+    Login: {
+      screen: LoginScreen
+    },
+    Register: {
+      screen: RegisterScreen
+    },
+
   }
 });
 
@@ -108,9 +129,10 @@ const Tabs = createBottomTabNavigator<TabsParamList>({
       },
     },
     User: {
-      screen: ProductsScreen,
+      screen: UserStack,
       options: {
-        tabBarIcon: ({ color, size }) => <FontAwesome name="user" color={color} size={size} />
+        tabBarIcon: ({ color, size }) => <FontAwesome name="user" color={color} size={size} />,
+        headerShown: false
       },
     },
   },
