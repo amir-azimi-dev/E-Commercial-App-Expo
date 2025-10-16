@@ -63,7 +63,8 @@ const LoginScreen = () => {
                         placeholder="Your Email or Phone Number"
                         value={formState.identifier}
                         onChangeText={changeInputHandler.bind(this, "identifier")}
-                        inputMode="numeric"
+                        inputMode="text"
+                        autoCapitalize="none"
                         className="p-3 bg-white border border-pink-500 rounded-lg text-lg"
                     />
                 </View>
