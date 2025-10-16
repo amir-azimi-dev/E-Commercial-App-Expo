@@ -12,8 +12,8 @@ type Product = {
     rating: number;
     reviewsCount: number;
     isFeatured: boolean;
-    createdAt: string;
-    updatedAt: string;
+    createdAt: Date;
+    updatedAt: Date;
 };
 
 export type ProductPreview = Pick<Product, "_id" | "title" | "image" | "price" | "countInStock">;
@@ -24,11 +24,33 @@ type Category = {
     color: string;
     icon: string;
     image: string;
-    createdAt: string;
-    updatedAt: string;
+    createdAt: Date;
+    updatedAt: Date;
+};
+
+type User = {
+    _id: string;
+    name: string;
+    email: string;
+    phone: string;
+    isAdmin: boolean;
+    street?: string;
+    apartment?: string;
+    city?: string;
+    zip?: string;
+    country?: string;
+    createdAt: Date;
+    updatedAt: Date;
+};
+
+type Auth = {
+    user: User;
+    token: string;
 };
 
 export {
     Product,
-    Category
+    Category,
+    User,
+    Auth
 };

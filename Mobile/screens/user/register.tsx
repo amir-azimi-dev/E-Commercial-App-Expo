@@ -6,6 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import { UserStackProps } from "types/navigation";
 import { Picker } from "@react-native-picker/picker";
 import countries from "db/countries";
+import useRegister from "graphql/mutations/useRegister";
 
 type FormState = {
     name: string;
@@ -72,6 +73,8 @@ const RegisterScreen = () => {
     const [formState, dispatch] = useReducer(reducer, initialState);
     const [areOptionalFieldsVisible, setAreOptionalFieldsVisible] = useState<boolean>(false);
 
+    const [registerUser, { data, loading, error }] = useRegister();
+
     const navigation = useNavigation<UserStackProps>();
 
     const changeInputHandler = (field: ActionTypes, newValue: string) => {
@@ -82,14 +85,23 @@ const RegisterScreen = () => {
         navigation.replace("Login");
     };
 
-    const registerHandler = (): void => {
-        const { name, email, phone, password} = formState;
+    const registerHandler = async (): Promise<void> => {
+        if (loading) return;
+
+        const { name, email, phone, password } = formState;
 
         if (!name.trim() || !email.trim() || !phone.trim() || !password.trim()) {
             return Alert.alert("Invalid Entry", "Please fill all required fields!");
         }
 
-        console.log(formState);
+        const { data, error } = await registerUser({ variables: formState });
+        if (error || !data?.token) {
+            Alert.alert("Error", "Error While Registering! Please try again.");
+            console.log(error?.message);
+            return;
+        }
+
+        console.log(data.token, data.user);
     };
 
 
