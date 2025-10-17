@@ -8,9 +8,10 @@ import 'react-native-gesture-handler';
 
 import Navigation from './navigation';
 import { Provider } from 'react-redux';
-import store from 'redux/store';
+import store, { persistor } from 'redux/store';
 import ApolloProvider from 'graphql/ApolloProvider';
 import ToastManager from 'toastify-react-native';
+import { PersistGate } from 'redux-persist/integration/react';
 
 export default function App() {
   const colorScheme = useColorScheme();
@@ -19,8 +20,10 @@ export default function App() {
   return (
     <ApolloProvider>
       <Provider store={store}>
-        <Navigation theme={theme} />
-        <ToastManager />
+        <PersistGate persistor={persistor} loading={null}>
+          <Navigation theme={theme} />
+          <ToastManager />
+        </PersistGate>
       </Provider>
     </ApolloProvider>
   );
