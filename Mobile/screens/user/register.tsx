@@ -96,8 +96,10 @@ const RegisterScreen = () => {
         }
 
         try {
-            const { data } = await registerUser({ variables: formState });
-            if (!data) throw new Error("");
+            const { data: responseData } = await registerUser({ variables: formState });
+            const data = responseData?.registerUser;
+
+            if (!data?.token) throw new Error("");
 
             Toast.show({
                 type: "success",

@@ -3,6 +3,8 @@ import { Alert, ScrollView, Text, TextInput, View } from "react-native";
 import Button from "components/modules/Button";
 import { useNavigation } from "@react-navigation/native";
 import { UserStackProps } from "types/navigation";
+import useLogin from "graphql/mutations/useLogin";
+import { Toast } from "toastify-react-native";
 
 type FormState = {
     identifier: string;
@@ -33,6 +35,8 @@ const reducer = (state: FormState, action: { type: ActionTypes, payload: string 
 const LoginScreen = () => {
     const [formState, dispatch] = useReducer(reducer, initialState);
 
+    const [loginUser, { loading }] = useLogin();
+
     const navigation = useNavigation<UserStackProps>();
 
     const changeInputHandler = (field: ActionTypes, newValue: string) => {
@@ -43,12 +47,39 @@ const LoginScreen = () => {
         navigation.replace("Register");
     };
 
-    const loginHandler = (): void => {
+    const loginHandler = async (): Promise<void> => {
+        if (loading) return;
+
         if (!formState.identifier.trim() || !formState.password.trim()) {
             return Alert.alert("Invalid Entry", "Please fill all the fields!");
         }
 
-        
+        try {
+            const { data: responseData } = await loginUser({ variables: formState });
+            const data = responseData?.loginUser;
+
+            if (!data?.token) throw new Error("");
+
+            Toast.show({
+                type: "success",
+                text1: "Success",
+                text2: "You Logged in successfully.",
+                position: "top"
+            });
+
+            console.log(data.token, data.user);
+
+        } catch (error) {
+            Toast.show({
+                type: "error",
+                text1: "Error",
+                text2: `Error While Logging in! Please try again. ${error}`,
+                position: "top",
+                useModal: true
+            });
+        }
+
+
     };
 
 
