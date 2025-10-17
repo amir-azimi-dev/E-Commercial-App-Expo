@@ -5,6 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import { HomeScreenProps } from "types/navigation";
 import { useAppDispatch, useAppSelector } from "redux/store";
 import { addOne, removeOne } from "redux/reducers/basket";
+import { Toast } from "toastify-react-native";
 
 const ProductCard = ({ _id, title, image, price, countInStock, disableNavigation }: ProductPreview & { disableNavigation?: boolean }) => {
     const basket = useAppSelector(state => state.basket).basket;
@@ -14,10 +15,22 @@ const ProductCard = ({ _id, title, image, price, countInStock, disableNavigation
 
     const addToBasketHandler = (): void => {
         dispatch(addOne({ _id, title, image, price, quantity: 1, countInStock }));
+        Toast.show({
+            type: "success",
+            text1: `"${title}" added to cart.`,
+            text2: "You can go to your cart to complete the order.",
+            position: "top"
+        });
     };
 
     const removeFromBasketHandler = (): void => {
         dispatch(removeOne(_id));
+        Toast.show({
+            type: "default",
+            text1: "Success",
+            text2: `"${title}" removed from cart.`,
+            position: "top"
+        });
     };
 
     const navigateToProductDetailsHandler = (): void => {

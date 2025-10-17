@@ -10,6 +10,7 @@ import Navigation from './navigation';
 import { Provider } from 'react-redux';
 import store from 'redux/store';
 import ApolloProvider from 'graphql/ApolloProvider';
+import ToastManager from 'toastify-react-native';
 
 export default function App() {
   const colorScheme = useColorScheme();
@@ -19,6 +20,7 @@ export default function App() {
     <ApolloProvider>
       <Provider store={store}>
         <Navigation theme={theme} />
+        <ToastManager />
       </Provider>
     </ApolloProvider>
   );

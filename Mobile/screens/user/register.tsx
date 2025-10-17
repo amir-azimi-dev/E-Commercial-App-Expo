@@ -7,6 +7,7 @@ import { UserStackProps } from "types/navigation";
 import { Picker } from "@react-native-picker/picker";
 import countries from "db/countries";
 import useRegister from "graphql/mutations/useRegister";
+import { Toast } from "toastify-react-native";
 
 type FormState = {
     name: string;
@@ -73,7 +74,7 @@ const RegisterScreen = () => {
     const [formState, dispatch] = useReducer(reducer, initialState);
     const [areOptionalFieldsVisible, setAreOptionalFieldsVisible] = useState<boolean>(false);
 
-    const [registerUser, { data, loading, error }] = useRegister();
+    const [registerUser, { loading }] = useRegister();
 
     const navigation = useNavigation<UserStackProps>();
 
@@ -94,14 +95,28 @@ const RegisterScreen = () => {
             return Alert.alert("Invalid Entry", "Please fill all required fields!");
         }
 
-        const { data, error } = await registerUser({ variables: formState });
-        if (error || !data?.token) {
-            Alert.alert("Error", "Error While Registering! Please try again.");
-            console.log(error?.message);
-            return;
-        }
+        try {
+            const { data } = await registerUser({ variables: formState });
+            if (!data) throw new Error("");
 
-        console.log(data.token, data.user);
+            Toast.show({
+                type: "success",
+                text1: "Success",
+                text2: "You Registered successfully.",
+                position: "top"
+            });
+
+            console.log(data.token, data.user);
+
+        } catch (error) {
+            Toast.show({
+                type: "error",
+                text1: "Error",
+                text2: `Error While Registering! Please try again. ${error}`,
+                position: "top",
+                useModal: true
+            });
+        }
     };
 
 
@@ -170,7 +185,7 @@ const RegisterScreen = () => {
                         value={areOptionalFieldsVisible}
                         onValueChange={value => setAreOptionalFieldsVisible(value)}
                     />
-                    <Text className="font-bold">Fill Optional Fields</Text>
+                    <Text className="font-bold" onPress={() => setAreOptionalFieldsVisible(prev => !prev)}>Fill Optional Fields</Text>
                 </View>
 
                 {areOptionalFieldsVisible && (
@@ -220,7 +235,7 @@ const RegisterScreen = () => {
 
 
                 <View className="mb-4">
-                    <Button title="Login" onPress={registerHandler} />
+                    <Button title="Register" onPress={registerHandler} />
                 </View>
 
                 <Text className="text-center">
