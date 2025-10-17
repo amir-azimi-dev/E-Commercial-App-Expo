@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import basketReducer from "./reducers/basket";
+import userReducer from "./reducers/user";
 import { useDispatch, useSelector } from "react-redux";
 
 const store = configureStore({
     reducer: {
-        basket: basketReducer
+        basket: basketReducer,
+        user: userReducer
     }
 });
 

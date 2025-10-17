@@ -3,6 +3,8 @@ import { Alert, ScrollView, Text, TextInput, View } from "react-native";
 import Button from "components/modules/Button";
 import { useNavigation } from "@react-navigation/native";
 import { UserStackProps } from "types/navigation";
+import { useAppDispatch } from "redux/store";
+import { saveUserInfo } from "redux/reducers/user";
 import useLogin from "graphql/mutations/useLogin";
 import { Toast } from "toastify-react-native";
 
@@ -34,6 +36,8 @@ const reducer = (state: FormState, action: { type: ActionTypes, payload: string 
 
 const LoginScreen = () => {
     const [formState, dispatch] = useReducer(reducer, initialState);
+
+    const reduxDispatch = useAppDispatch();
 
     const [loginUser, { loading }] = useLogin();
 
@@ -67,7 +71,7 @@ const LoginScreen = () => {
                 position: "top"
             });
 
-            console.log(data.token, data.user);
+            reduxDispatch(saveUserInfo({ token: data.token, ...data.user }));
 
         } catch (error) {
             Toast.show({

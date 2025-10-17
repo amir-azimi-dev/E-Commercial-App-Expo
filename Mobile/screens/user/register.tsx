@@ -6,6 +6,8 @@ import { useNavigation } from "@react-navigation/native";
 import { UserStackProps } from "types/navigation";
 import { Picker } from "@react-native-picker/picker";
 import countries from "db/countries";
+import { useAppDispatch } from "redux/store";
+import { saveUserInfo } from "redux/reducers/user";
 import useRegister from "graphql/mutations/useRegister";
 import { Toast } from "toastify-react-native";
 
@@ -74,6 +76,8 @@ const RegisterScreen = () => {
     const [formState, dispatch] = useReducer(reducer, initialState);
     const [areOptionalFieldsVisible, setAreOptionalFieldsVisible] = useState<boolean>(false);
 
+    const reduxDispatch = useAppDispatch();
+
     const [registerUser, { loading }] = useRegister();
 
     const navigation = useNavigation<UserStackProps>();
@@ -108,7 +112,7 @@ const RegisterScreen = () => {
                 position: "top"
             });
 
-            console.log(data.token, data.user);
+            reduxDispatch(saveUserInfo({ token: data.token, ...data.user }));
 
         } catch (error) {
             Toast.show({
