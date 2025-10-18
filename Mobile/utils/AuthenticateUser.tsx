@@ -3,11 +3,8 @@ import { useAppDispatch, useAppSelector } from "redux/store";
 import { clearUserInfo, saveUserInfo } from "redux/reducers/user";
 import { useEffect } from "react";
 
-
 const AuthenticateUser = () => {
     const userToken = useAppSelector(state => state.user.token);
-    console.log(useAppSelector(state => state.user));
-    
     const dispatch = useAppDispatch();
 
     const { data: userInfo, loading } = useUser();
@@ -20,8 +17,8 @@ const AuthenticateUser = () => {
             return;
         }
 
-        const { _id, name, isAdmin } = userInfo.getMe;
-        dispatch(saveUserInfo({ _id, name, isAdmin, token: userToken }));
+        const { _id, name, email, phone, isAdmin } = userInfo.getMe;
+        dispatch(saveUserInfo({ _id, name, email, phone, isAdmin, token: userToken }));
 
     }, [userInfo, userToken, loading]);
 

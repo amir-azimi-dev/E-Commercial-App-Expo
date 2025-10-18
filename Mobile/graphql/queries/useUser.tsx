@@ -3,7 +3,7 @@ import { useQuery } from "@apollo/client/react";
 import { User } from "types";
 
 const GET_USER = gql`
-    query {
+    query GetMe {
         getMe {
             _id
             name
