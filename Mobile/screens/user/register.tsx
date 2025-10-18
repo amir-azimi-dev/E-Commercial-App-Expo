@@ -1,13 +1,13 @@
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { Alert, Platform, ScrollView, Text, TextInput, View } from "react-native";
 import { Checkbox } from "expo-checkbox";
-import Button from "components/modules/Button";
+import { useAppDispatch, useAppSelector } from "redux/store";
+import { saveUserInfo } from "redux/reducers/user";
 import { useNavigation } from "@react-navigation/native";
 import { UserStackProps } from "types/navigation";
 import { Picker } from "@react-native-picker/picker";
+import Button from "components/modules/Button";
 import countries from "db/countries";
-import { useAppDispatch } from "redux/store";
-import { saveUserInfo } from "redux/reducers/user";
 import useRegister from "graphql/mutations/useRegister";
 import { Toast } from "toastify-react-native";
 
@@ -76,11 +76,17 @@ const RegisterScreen = () => {
     const [formState, dispatch] = useReducer(reducer, initialState);
     const [areOptionalFieldsVisible, setAreOptionalFieldsVisible] = useState<boolean>(false);
 
+    const userId = useAppSelector(state => state.user._id);
     const reduxDispatch = useAppDispatch();
 
     const [registerUser, { loading }] = useRegister();
 
     const navigation = useNavigation<UserStackProps>();
+
+    useEffect(() => {
+        if (userId) navigation.replace("Profile");
+
+    }, [userId]);
 
     const changeInputHandler = (field: ActionTypes, newValue: string) => {
         dispatch({ type: field, payload: newValue });

@@ -1,10 +1,10 @@
-import { useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import { Alert, ScrollView, Text, TextInput, View } from "react-native";
 import Button from "components/modules/Button";
+import { useAppDispatch, useAppSelector } from "redux/store";
+import { saveUserInfo } from "redux/reducers/user";
 import { useNavigation } from "@react-navigation/native";
 import { UserStackProps } from "types/navigation";
-import { useAppDispatch } from "redux/store";
-import { saveUserInfo } from "redux/reducers/user";
 import useLogin from "graphql/mutations/useLogin";
 import { Toast } from "toastify-react-native";
 
@@ -37,11 +37,17 @@ const reducer = (state: FormState, action: { type: ActionTypes, payload: string 
 const LoginScreen = () => {
     const [formState, dispatch] = useReducer(reducer, initialState);
 
+    const userId = useAppSelector(state => state.user._id);
     const reduxDispatch = useAppDispatch();
 
     const [loginUser, { loading }] = useLogin();
 
     const navigation = useNavigation<UserStackProps>();
+
+    useEffect(() => {
+        if (userId) navigation.replace("Profile");
+
+    }, [userId]);
 
     const changeInputHandler = (field: ActionTypes, newValue: string) => {
         dispatch({ type: field, payload: newValue });
