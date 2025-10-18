@@ -6,7 +6,7 @@ import { getProducts } from "./queries/product";
 import { createCategory, editCategory, removeCategory } from "./mutations/category";
 import { getCategories, getCategory } from "./queries/category";
 import { getStatistics } from "./queries/statistics";
-import { getUser, getUsers } from "./queries/user";
+import { getMe, getUser, getUsers } from "./queries/user";
 import { placeOrder, removeOrder, updateOrderStatus } from "./mutations/order";
 import { getOrder, getOrders } from "./queries/order";
 
@@ -14,6 +14,7 @@ const resolvers = {
     Query: {
         getUsers: isAdminMiddleware(getUsers),
         getUser: isAdminMiddleware(getUser),
+        getMe,
 
         getProducts,
 

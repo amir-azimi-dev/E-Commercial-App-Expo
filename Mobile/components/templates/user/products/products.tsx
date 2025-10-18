@@ -26,11 +26,9 @@ const Products = () => {
     }, []);
 
     useEffect(() => {
-        // setProducts(testProducts);
         setFilteredProducts(products?.getProducts || []);
 
         return () => {
-            // setProducts([]);
             setFilteredProducts([]);
             setVisibleProducts([]);
             setSearchedTitle("");

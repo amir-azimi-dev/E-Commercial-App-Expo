@@ -12,19 +12,21 @@ import store, { persistor } from 'redux/store';
 import ApolloProvider from 'graphql/ApolloProvider';
 import ToastManager from 'toastify-react-native';
 import { PersistGate } from 'redux-persist/integration/react';
+import AuthenticateUser from 'utils/AuthenticateUser';
 
 export default function App() {
   const colorScheme = useColorScheme();
   const theme = useMemo(() => (colorScheme === 'dark' ? DarkTheme : DefaultTheme), [colorScheme]);
 
   return (
-    <ApolloProvider>
-      <Provider store={store}>
-        <PersistGate persistor={persistor} loading={null}>
+    <Provider store={store}>
+      <PersistGate persistor={persistor} loading={null}>
+        <ApolloProvider>
           <Navigation theme={theme} />
           <ToastManager />
-        </PersistGate>
-      </Provider>
-    </ApolloProvider>
+          <AuthenticateUser />
+        </ApolloProvider>
+      </PersistGate>
+    </Provider>
   );
 }

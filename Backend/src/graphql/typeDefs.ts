@@ -17,6 +17,7 @@ const typeDefs = `#graphql
     type Query {
         getUsers: [User!]!,
         getUser(id: ID!): User,
+        getMe: User,
 
         getProducts(count: Int, categories: [String!], onlyFeaturedProducts: Boolean): [Product!]!,
 

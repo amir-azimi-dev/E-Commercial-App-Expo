@@ -2,6 +2,7 @@ declare const resolvers: {
     Query: {
         getUsers: (parent: any, args: any, context: any, info: any) => any;
         getUser: (parent: any, args: any, context: any, info: any) => any;
+        getMe: (_: unknown, __: unknown, context: any) => Promise<import("../db/models/user").UserDocument>;
         getProducts: (_: unknown, { count, categories, onlyFeaturedProducts }: import("./types/product").GetProductsParams) => Promise<import("../db/models/product").ProductDocument[]>;
         getCategories: () => Promise<import("../db/models/category").CategoryDocument[]>;
         getCategory: (_: unknown, { id }: {

@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUser = exports.getUsers = void 0;
+exports.getMe = exports.getUser = exports.getUsers = void 0;
 const graphql_1 = require("graphql");
 const user_1 = __importDefault(require("../../db/models/user"));
 const mongoose_1 = __importDefault(require("mongoose"));
@@ -30,4 +30,8 @@ const getUser = async (_, { id }) => {
     }
 };
 exports.getUser = getUser;
+const getMe = async (_, __, context) => {
+    return context.user;
+};
+exports.getMe = getMe;
 //# sourceMappingURL=user.js.map

@@ -25,7 +25,12 @@ const getUser = async (_: unknown, { id }: { id: string }): Promise<UserDocument
     }
 };
 
+const getMe = async (_: unknown, __: unknown, context: any): Promise<UserDocument> => {
+    return context.user;
+};
+
 export {
     getUsers,
-    getUser
+    getUser,
+    getMe
 };
