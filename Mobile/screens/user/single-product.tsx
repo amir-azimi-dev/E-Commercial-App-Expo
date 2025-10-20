@@ -181,7 +181,7 @@ const SingleProductsScreen = () => {
             </ScrollView>
 
             <View className="flex-row justify-between items-center mt-auto pt-3 border-gray-300 border-t">
-                <Text className="font-bold text-2xl text-tint">$ {product.price}</Text>
+                <Text className="font-bold text-2xl text-tint">${product.price.toLocaleString()}</Text>
 
                 {!!product.countInStock ? (
                     <View className={Platform.OS !== "ios" ? "mt-1" : ""}>

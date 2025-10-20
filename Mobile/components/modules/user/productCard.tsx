@@ -51,7 +51,7 @@ const ProductCard = ({ _id, title, image, price, countInStock, disableNavigation
                         resizeMode="contain"
                     />
                     <Text className="font-bold text-center text-xl">{title.length > 15 ? `${title.substring(0, 12)} ...` : title}</Text>
-                    <Text className="font-bold text-center text-orange-400 text-xl">${price}</Text>
+                    <Text className="font-bold text-center text-orange-400 text-xl">${price.toLocaleString()}</Text>
 
                     {!!countInStock ? (
                         <View className={Platform.OS !== "ios" ? "mt-1" : ""}>

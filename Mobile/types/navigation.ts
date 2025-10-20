@@ -33,6 +33,13 @@ type TopTabsParamList = {
     Confirm: ShippingState & PaymentData;
 };
 
+type AdminStackParamList = {
+    Products: undefined;
+    ProductForm?: { id: string };
+    Categories: undefined;
+    Orders: undefined;
+};
+
 type HomeScreenProps = NativeStackNavigationProp<HomeStackParamList, "Home">;
 type ProductDetailsScreenProps = NativeStackNavigationProp<HomeStackParamList, "ProductDetails">;
 type BasketScreenProps = NativeStackNavigationProp<BasketStackParamList, "Basket">;
@@ -40,6 +47,7 @@ type ShippingTabScreenProps = NativeStackNavigationProp<TopTabsParamList, "Shipp
 type PaymentTabScreenProps = NativeStackNavigationProp<TopTabsParamList, "Payment">;
 type ConfirmTabScreenProps = NativeStackNavigationProp<TopTabsParamList, "Confirm">;
 type UserStackProps = NativeStackNavigationProp<UserStackParamList>;
+type AdminStackProps = NativeStackNavigationProp<AdminStackParamList>;
 
 type HomeScreenRouteProps = RouteProp<HomeStackParamList, "Home">;
 type ProductDetailsScreenRouteProps = RouteProp<HomeStackParamList, "ProductDetails">;
@@ -52,6 +60,7 @@ export {
     TabsParamList,
     BasketStackParamList,
     TopTabsParamList,
+    AdminStackParamList,
     HomeScreenProps,
     ProductDetailsScreenProps,
     BasketScreenProps,
@@ -59,6 +68,7 @@ export {
     PaymentTabScreenProps,
     ConfirmTabScreenProps,
     UserStackProps,
+    AdminStackProps,
 
     HomeScreenRouteProps,
     ProductDetailsScreenRouteProps,

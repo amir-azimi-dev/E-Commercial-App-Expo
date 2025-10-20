@@ -39,7 +39,7 @@ const Products = () => {
     useEffect(() => {
         if (!products?.getProducts.length) return;
 
-        if (!searchedTitle.trim()) return setFilteredProducts(products?.getProducts);
+        if (!searchedTitle.trim()) return setFilteredProducts(products.getProducts);
 
         const filteredProduct = products?.getProducts.filter(product => product.title.match(new RegExp(searchedTitle.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i")));
         setFilteredProducts(filteredProduct);
@@ -56,7 +56,7 @@ const Products = () => {
     }, [selectedCategories, filteredProducts]);
 
     if (loading) return <ActivityIndicator size="large" className="flex-1" />;
-    if (error) return <Text>Error While Fetching Data!</Text>;
+    if (error) return <Text className="mt-5 font-bold text-2xl text-center">Error While Fetching Data!</Text>;
 
     return (
         <View className="flex-1 pb-4">

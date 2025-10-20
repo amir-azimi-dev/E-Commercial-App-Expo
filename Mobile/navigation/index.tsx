@@ -1,20 +1,14 @@
 import { createStaticNavigation, StaticParamList } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { BasketStackParamList, HomeStackParamList, UserStackParamList, TabsParamList, TopTabsParamList } from 'types/navigation';
+import { TabsParamList } from 'types/navigation';
 import { Text, View } from 'react-native';
 import { FontAwesome } from "@expo/vector-icons";
 import { useAppSelector } from 'redux/store';
 import ProductsScreen from 'screens/user/products';
-import SingleProductsScreen from 'screens/user/single-product';
-import BasketScreen from 'screens/user/basket';
-import ShippingScreen from 'screens/user/checkout/shipping';
-import PaymentScreen from 'screens/user/checkout/payment';
-import ConfirmScreen from 'screens/user/checkout/confirm';
-import ProfileScreen from 'screens/user/profile';
-import LoginScreen from 'screens/user/login';
-import RegisterScreen from 'screens/user/register';
+import HomeStack from './homeStack';
+import BasketStack from './basketStack';
+import UserStack from './userStack';
+import AdminStack from './adminStack';
 
 const BasketIcon = ({ color, size }: { color: string; size: number }) => {
   const basketItemsCount = useAppSelector(state => state.basket.basket.length);
@@ -33,70 +27,6 @@ const BasketIcon = ({ color, size }: { color: string; size: number }) => {
     </View>
   );
 }
-
-const CheckoutTopTabs = createMaterialTopTabNavigator<TopTabsParamList>({
-  initialRouteName: "Shipping",
-
-  screens: {
-    Shipping: {
-      screen: ShippingScreen
-    },
-    Payment: {
-      screen: PaymentScreen
-    },
-    Confirm: {
-      screen: ConfirmScreen
-    }
-  }
-});
-
-const BasketStack = createStackNavigator<BasketStackParamList>({
-  initialRouteName: "Basket",
-
-  screens: {
-    Basket: {
-      screen: BasketScreen
-    },
-    Checkout: {
-      screen: CheckoutTopTabs
-    }
-  }
-});
-
-
-const UserStack = createStackNavigator<UserStackParamList>({
-  initialRouteName: "Login",
-
-  screens: {
-    Profile: {
-      screen: ProfileScreen
-    },
-    Login: {
-      screen: LoginScreen
-    },
-    Register: {
-      screen: RegisterScreen
-    },
-
-  }
-});
-
-const HomeStack = createStackNavigator<HomeStackParamList>({
-  initialRouteName: "Home",
-
-  screens: {
-    Home: {
-      screen: ProductsScreen
-    },
-    ProductDetails: {
-      screen: SingleProductsScreen,
-      options: {
-        title: "Product Details ..."
-      }
-    }
-  }
-});
-
 
 const Tabs = createBottomTabNavigator<TabsParamList>({
   initialRouteName: "HomeStack",
@@ -123,9 +53,10 @@ const Tabs = createBottomTabNavigator<TabsParamList>({
       },
     },
     Admin: {
-      screen: ProductsScreen,
+      screen: AdminStack,
       options: {
-        tabBarIcon: ({ color, size }) => <FontAwesome name="cog" color={color} size={size} />
+        tabBarIcon: ({ color, size }) => <FontAwesome name="cog" color={color} size={size} />,
+        headerShown: false
       },
     },
     User: {

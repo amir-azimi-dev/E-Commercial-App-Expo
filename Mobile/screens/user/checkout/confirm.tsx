@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Alert,  FlatList, ScrollView, Text, useWindowDimensions, View } from "react-native";
+import { Alert, FlatList, ScrollView, Text, useWindowDimensions, View } from "react-native";
 import Button from "components/modules/Button";
 import { CommonActions, useIsFocused, useNavigation, useRoute } from "@react-navigation/native";
 import { ConfirmTabScreenProps, ConfirmTabScreenRouteProps } from "types/navigation";
@@ -72,7 +72,6 @@ const ConfirmScreen = () => {
                                 routes: [{ name: "HomeStack" }],
                             })
                         );
-
                     }
                 }
             ]
