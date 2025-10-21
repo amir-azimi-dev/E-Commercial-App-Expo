@@ -1,16 +1,21 @@
 import { Image, Platform, Pressable, ScrollView, Text, View } from "react-native";
+import { FontAwesome } from "@expo/vector-icons";
 import { Product } from "~/../types";
 import { useNavigation } from "@react-navigation/native";
-import { HomeScreenProps } from "types/navigation";
+import { AdminStackProps } from "types/navigation";
 
 const ProductCard = ({ _id, title, brand, category, image, price, index }: Product & { index: number }) => {
-    const navigation = useNavigation<HomeScreenProps>();
+    const navigation = useNavigation<AdminStackProps>();
 
     const navigateToProductDetailsHandler = (): void => {
         navigation.getParent()?.navigate("HomeStack", {
             screen: "ProductDetails",
             params: { id: _id },
         });
+    };
+
+    const navigateToEditProductHandler = (): void => {
+        navigation.navigate("ProductForm", { id: _id });
     };
 
     return (
@@ -40,6 +45,12 @@ const ProductCard = ({ _id, title, brand, category, image, price, index }: Produ
                             <Text className="font-bold text-center" numberOfLines={1} ellipsizeMode="tail">{category.title}</Text>
                             <View className="w-0.5 h-full bg-gray-100"></View>
                             <Text className="font-bold text-center text-orange-400">${price.toLocaleString()}</Text>
+                            <View className="w-0.5 h-full bg-gray-100"></View>
+                            <Pressable onPress={navigateToEditProductHandler}>
+                                {({ pressed }) => (
+                                    <FontAwesome name="edit" color="#00a6ff" size={30} className={pressed ? "opacity-70" : "opacity-100"} />
+                                )}
+                            </Pressable>
                         </View>
                     )}
                 </Pressable>

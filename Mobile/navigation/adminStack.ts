@@ -16,6 +16,7 @@ const AdminStack = createStackNavigator<AdminStackParamList>({
         ProductForm: {
             screen: ProductFormScreen,
             options: {
+                presentation: "modal",
                 title: "Product Form"
             }
         },
