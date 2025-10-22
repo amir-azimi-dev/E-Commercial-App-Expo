@@ -137,6 +137,34 @@ const SingleProductsScreen = () => {
 
     }, [params, navigation]);
 
+    const getAvailabilityText = () => {
+        if (!product) return;
+
+        if (product.countInStock >= 5) {
+            return "Available";
+        }
+
+        if (product.countInStock > 0) {
+            return "Available";
+        }
+
+        return "Unavailable";
+    };
+
+    const getAvailabilityColor = () => {
+        if (!product) return;
+
+        if (product.countInStock >= 5) {
+            return "#00ff00";
+        }
+
+        if (product.countInStock > 0) {
+            return "#d2ba0a";
+        }
+
+        return "#ff0000";
+    };
+
     const addToBasketHandler = (): void => {
         if (!product) return;
 
@@ -177,6 +205,14 @@ const SingleProductsScreen = () => {
                 <Text className="mt-3 font-bold text-3xl text-center">{product.title}</Text>
                 {product.brand && <Text className="mt-2 font-bold text-2xl text-center">{product.brand}</Text>}
 
+                <View className="flex-row justify-center items-center gap-x-2 my-3">
+                    <Text>Availability: </Text>
+                    <View className="flex-row items-center gap-x-1">
+                        <Text>{getAvailabilityText()}</Text>
+                        <View className="rounded-full size-4" style={{ backgroundColor: getAvailabilityColor() }}></View>
+                    </View>
+                </View>
+
                 <Text className="mt-3 pt-3 border-gray-300 border-t text-lg">{product.description}</Text>
             </ScrollView>
 
@@ -194,7 +230,7 @@ const SingleProductsScreen = () => {
                 ) : (
                     <Text className="font-bold text-red-500">Unavailable</Text>
                 )}
-                
+
             </View>
         </View>
     );
