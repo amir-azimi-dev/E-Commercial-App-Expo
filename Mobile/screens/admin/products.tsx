@@ -4,13 +4,17 @@ import { useNavigation } from "@react-navigation/native";
 import useProducts from "graphql/queries/useProducts";
 import { Product } from "types";
 import ProductCard from "components/modules/admin/ProductCard";
+import { AdminStackProps } from "types/navigation";
+import useIsAdmin from "utils/useIsAdmin";
 
 const ProductsScreen = () => {
+    const isAdmin = useIsAdmin();
+
     const { data: products, loading, error } = useProducts({});
     const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
     const [searchedTitle, setSearchedTitle] = useState<string>("");
 
-    const navigation = useNavigation();
+    const navigation = useNavigation<AdminStackProps>();
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -32,8 +36,10 @@ const ProductsScreen = () => {
 
     }, [searchedTitle, products]);
 
-    if (loading) return <ActivityIndicator size="large" className="flex-1" />;
+    if (isAdmin === null || loading) return <ActivityIndicator size="large" className="flex-1" />;
     if (error) return <Text className="mt-5 font-bold text-2xl text-center">Error While Fetching Data!</Text>;
+    if (isAdmin === false) return;
+
 
     return (
         <View className="flex-1 px-5 bg-slate-200">

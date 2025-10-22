@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Alert, ScrollView, Text, View } from "react-native";
 import { useAppDispatch, useAppSelector } from "redux/store";
 import { clearUserInfo } from "redux/reducers/user";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { UserStackProps } from "types/navigation";
 import { useApolloClient } from "@apollo/client/react";
 import AuthenticateUser from "utils/AuthenticateUser";
@@ -14,6 +14,7 @@ const ProfileScreen = () => {
     const dispatch = useAppDispatch();
 
     const navigation = useNavigation<UserStackProps>();
+    const isFocused = useIsFocused();
 
     const client = useApolloClient();
     const reauthenticateUser = () => client.refetchQueries({ include: ["GetMe"] });
@@ -26,7 +27,7 @@ const ProfileScreen = () => {
     useEffect(() => {
         if (!user._id) navigation.replace("Login");
 
-    }, [user._id]);
+    }, [user._id, isFocused]);
 
     const logoutHandler = (): void => {
         Alert.alert("Logout", "Are you sure you want to logout?", [
