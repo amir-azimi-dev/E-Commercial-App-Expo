@@ -1,10 +1,9 @@
 import { createStaticNavigation, StaticParamList } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { TabsParamList } from 'types/navigation';
-import { Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import { FontAwesome } from "@expo/vector-icons";
 import { useAppSelector } from 'redux/store';
-import ProductsScreen from 'screens/user/products';
 import HomeStack from './homeStack';
 import BasketStack from './basketStack';
 import UserStack from './userStack';
@@ -28,13 +27,24 @@ const BasketIcon = ({ color, size }: { color: string; size: number }) => {
   );
 }
 
+const CustomTabButton = (props: any) => (
+  <View className="flex-1 rounded-b-lg overflow-hidden">
+    <Pressable
+      {...props}
+      android_ripple={{ color: "rgba(0,0,0,0.15)", foreground: true }}
+      style={[{ flex: 1, alignItems: "center", justifyContent: "center" }, props.style]}
+    />
+  </View>
+);
+
 const Tabs = createBottomTabNavigator<TabsParamList>({
   initialRouteName: "HomeStack",
 
   screenOptions: {
     tabBarHideOnKeyboard: true,
     tabBarShowLabel: false,
-    tabBarActiveTintColor: "#e91e63"
+    tabBarActiveTintColor: "#e91e63",
+    tabBarButton: (props) => <CustomTabButton {...props} />
   },
 
   screens: {
