@@ -2,6 +2,7 @@ import { RouteProp } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ShippingState } from "screens/user/checkout/shipping";
 import { PaymentData } from "screens/user/checkout/payment";
+import { Product } from "types";
 
 
 type HomeStackParamList = {
@@ -35,14 +36,14 @@ type TopTabsParamList = {
 
 type AdminTopTabsParamList = {
     Products: undefined;
-    ProductForm?: { id: string };
+    ProductForm?: { product: Product };
     Categories: undefined;
     Orders: undefined;
 };
 
 type AdminStackParamList = {
     AdminTopTabs: undefined;
-    ProductForm?: { id: string };
+    ProductForm?: { product: Product };
 };
 
 type HomeScreenProps = NativeStackNavigationProp<HomeStackParamList, "Home">;
@@ -58,6 +59,7 @@ type HomeScreenRouteProps = RouteProp<HomeStackParamList, "Home">;
 type ProductDetailsScreenRouteProps = RouteProp<HomeStackParamList, "ProductDetails">;
 type PaymentTabScreenRouteProps = RouteProp<TopTabsParamList, "Payment">;
 type ConfirmTabScreenRouteProps = RouteProp<TopTabsParamList, "Confirm">;
+type ProductFormScreenRouteProps = RouteProp<AdminStackParamList, "ProductForm">;
 
 export {
     HomeStackParamList,
@@ -79,5 +81,6 @@ export {
     HomeScreenRouteProps,
     ProductDetailsScreenRouteProps,
     PaymentTabScreenRouteProps,
-    ConfirmTabScreenRouteProps
+    ConfirmTabScreenRouteProps,
+    ProductFormScreenRouteProps
 };

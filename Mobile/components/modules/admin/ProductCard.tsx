@@ -4,7 +4,8 @@ import { Product } from "~/../types";
 import { useNavigation } from "@react-navigation/native";
 import { AdminStackProps } from "types/navigation";
 
-const ProductCard = ({ _id, title, brand, category, image, price, index }: Product & { index: number }) => {
+const ProductCard = (props: Product & { index: number }) => {
+    const { _id, title, brand, category, image, price, index } = props;
     const navigation = useNavigation<AdminStackProps>();
 
     const navigateToProductDetailsHandler = (): void => {
@@ -15,7 +16,7 @@ const ProductCard = ({ _id, title, brand, category, image, price, index }: Produ
     };
 
     const navigateToEditProductHandler = (): void => {
-        navigation.navigate("ProductForm", { id: _id });
+        navigation.navigate("ProductForm", { product: props });
     };
 
     return (

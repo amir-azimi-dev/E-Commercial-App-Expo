@@ -35,8 +35,9 @@ const AdminStack = createStackNavigator<AdminStackParamList>({
         ProductForm: {
             screen: ProductFormScreen,
             options: {
-                presentation: "modal",
-                title: "Product Form"
+                presentation: "transparentModal",
+                title: "Product Form",
+                headerBackTitle: "Back"
             }
         }
     }
