@@ -53,6 +53,7 @@ type ShippingTabScreenProps = NativeStackNavigationProp<TopTabsParamList, "Shipp
 type PaymentTabScreenProps = NativeStackNavigationProp<TopTabsParamList, "Payment">;
 type ConfirmTabScreenProps = NativeStackNavigationProp<TopTabsParamList, "Confirm">;
 type UserStackProps = NativeStackNavigationProp<UserStackParamList>;
+type AdminStackParentProps = NativeStackNavigationProp<AdminStackParamList>;
 type AdminStackProps = NativeStackNavigationProp<AdminTopTabsParamList>;
 
 type HomeScreenRouteProps = RouteProp<HomeStackParamList, "Home">;
@@ -76,6 +77,7 @@ export {
     PaymentTabScreenProps,
     ConfirmTabScreenProps,
     UserStackProps,
+    AdminStackParentProps,
     AdminStackProps,
 
     HomeScreenRouteProps,

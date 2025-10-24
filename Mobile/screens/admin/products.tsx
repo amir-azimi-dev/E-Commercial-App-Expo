@@ -60,7 +60,7 @@ const ProductsScreen = () => {
                 renderItem={({ item, index }) => <ProductCard {...item} index={index} />}
                 keyExtractor={product => product._id}
                 contentContainerStyle={{ rowGap: 12 }}
-                className="-mx-4 my-3 px-1"
+                className="-mx-4 my-3 px-4"
             />
 
             <View className="mt-auto mb-5">

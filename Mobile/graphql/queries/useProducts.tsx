@@ -3,7 +3,7 @@ import { useQuery } from "@apollo/client/react";
 import { Product } from "types";
 
 const GET_PRODUCTS = gql`
-    query ($count: Int, $categories: [String!], $onlyFeaturedProducts: Boolean) {
+    query GetProducts ($count: Int, $categories: [String!], $onlyFeaturedProducts: Boolean) {
         getProducts(count: $count , categories: $categories, onlyFeaturedProducts: $onlyFeaturedProducts) {
             _id
             title

@@ -88,8 +88,6 @@ const LoginScreen = () => {
                 useModal: true
             });
         }
-
-
     };
 
 
