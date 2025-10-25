@@ -2,9 +2,9 @@ import { gql } from "@apollo/client";
 import { useMutation } from "@apollo/client/react";
 import { Product } from "types";
 
-const CREATE_PRODUCT = gql`
-    mutation ($title: String!, $description: String!, $richDescription: String, $image: String, $images: [String!], $brand: String, $price: Float!, $category: ID!, $countInStock: Int!, $rating: Int, $reviewsCount: Int, $isFeatured: Boolean) {
-        createProduct(title: $title, description: $description,richDescription: $richDescription, image: $image,images: $images, brand: $brand, price: $price, category: $category, countInStock: $countInStock, rating: $rating,reviewsCount: $reviewsCount, isFeatured: $isFeatured) {
+const EDIT_PRODUCT = gql`
+    mutation ($id: ID!, $title: String!, $description: String!, $richDescription: String, $image: String, $images: [String!], $brand: String, $price: Float!, $category: ID!, $countInStock: Int!, $rating: Int, $reviewsCount: Int, $isFeatured: Boolean) {
+        editProduct(id: $id, title: $title, description: $description,richDescription: $richDescription, image: $image,images: $images, brand: $brand, price: $price, category: $category, countInStock: $countInStock, rating: $rating,reviewsCount: $reviewsCount, isFeatured: $isFeatured) {
             _id
             title
             description
@@ -32,7 +32,8 @@ const CREATE_PRODUCT = gql`
     }
 `;
 
-type CreateProductVars = {
+type EditProductVars = {
+    id: string;
     title: string;
     description: string;
     richDescription?: string;
@@ -47,12 +48,12 @@ type CreateProductVars = {
     isFeatured: boolean;
 };
 
-type CreateProductData = {
-    createProduct?: Product;
+type EditProductData = {
+    editProduct?: Product;
 };
 
-const useCreateProduct = () => {
-    return useMutation<CreateProductData, CreateProductVars>(CREATE_PRODUCT);
+const useEditProduct = () => {
+    return useMutation<EditProductData, EditProductVars>(EDIT_PRODUCT);
 };
 
-export default useCreateProduct;
+export default useEditProduct;

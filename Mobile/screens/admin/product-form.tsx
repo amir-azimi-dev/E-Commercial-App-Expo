@@ -12,6 +12,7 @@ import Button from "components/modules/Button";
 import useIsAdmin from "utils/useIsAdmin";
 import { AdminStackParentProps, ProductFormScreenRouteProps } from "types/navigation";
 import { Toast } from "toastify-react-native";
+import useEditProduct from "graphql/mutations/useEditProduct";
 
 type FormState = {
     title: string;
@@ -110,6 +111,7 @@ const ProductFormScreen = () => {
     const productData = useRoute<ProductFormScreenRouteProps>().params?.product;
 
     const [createProduct, { loading: isFetching }] = useCreateProduct();
+    const [editProduct, { loading: isEditing }] = useEditProduct();
 
     useEffect(() => {
         if (!productData) return;
@@ -169,7 +171,7 @@ const ProductFormScreen = () => {
     };
 
     const submitHandler = async (): Promise<void> => {
-        if (isFetching) return;
+        if (isFetching || isEditing) return;
 
         if (
             !formState.title.trim() ||
@@ -271,11 +273,39 @@ const ProductFormScreen = () => {
                 useModal: true
             });
         }
-
     };
 
-    const editProductHandler = async (productId: string, data: FormState): Promise<void> => {
+    const editProductHandler = async (productId: string, productData: FormState): Promise<void> => {
+        try {
+            const { price, countInStock, rating, reviewsCount } = productData;
+            const manipulatedProductData = { id: productId, ...productData, price: +price, countInStock: +countInStock, rating: +rating, reviewsCount: +reviewsCount };
 
+            const { data: responseData } = await editProduct({ variables: manipulatedProductData });
+            const data = responseData?.editProduct;
+
+            if (!data?._id) throw new Error("Product not found!");
+
+            Toast.show({
+                type: "success",
+                text1: "Success",
+                text2: "Product Edited successfully.",
+                position: "top",
+                onHide: () => {
+                    refetchProducts();
+                    navigation.goBack();
+                }
+            });
+
+        } catch (error) {
+            console.log(error)
+            Toast.show({
+                type: "error",
+                text1: "Error",
+                text2: `Error While Editing the Product! Please try again. ${error}`,
+                position: "top",
+                useModal: true
+            });
+        }
     };
 
     const removeProductHandler = (): void => {
