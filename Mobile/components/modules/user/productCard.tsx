@@ -62,7 +62,9 @@ const ProductCard = ({ _id, title, image, price, countInStock, disableNavigation
                             )}
                         </View>
                     ) : (
-                        <Text className="font-bold text-red-500">Unavailable</Text>
+                        <View style={{ marginVertical: Platform.OS === "ios" ? 7 : 6 }}>
+                            <Text className="font-bold text-lg text-red-500">Unavailable</Text>
+                        </View>
                     )}
                 </View>
             )}

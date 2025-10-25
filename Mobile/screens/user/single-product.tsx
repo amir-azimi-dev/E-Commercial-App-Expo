@@ -123,10 +123,10 @@ const SingleProductsScreen = () => {
     const navigation = useNavigation<ProductDetailsScreenProps>();
 
     useLayoutEffect(() => {
-        if (!params?.id) return navigation.navigate("Home");
+        if (!params?.id) return navigation.goBack();
 
         const targetProduct = testProduct.find(product => product._id === params.id);
-        if (!targetProduct) return navigation.navigate("Home");
+        if (!targetProduct) return navigation.goBack();
 
         navigation.setOptions({
             title: targetProduct.title
