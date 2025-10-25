@@ -13,6 +13,7 @@ import useIsAdmin from "utils/useIsAdmin";
 import { AdminStackParentProps, ProductFormScreenRouteProps } from "types/navigation";
 import { Toast } from "toastify-react-native";
 import useEditProduct from "graphql/mutations/useEditProduct";
+import useRemoveProduct from "graphql/mutations/useRemoveProduct";
 
 type FormState = {
     title: string;
@@ -110,8 +111,9 @@ const ProductFormScreen = () => {
     const navigation = useNavigation<AdminStackParentProps>();
     const productData = useRoute<ProductFormScreenRouteProps>().params?.product;
 
-    const [createProduct, { loading: isFetching }] = useCreateProduct();
+    const [createProduct, { loading: isCreating }] = useCreateProduct();
     const [editProduct, { loading: isEditing }] = useEditProduct();
+    const [removeProduct, { loading: isRemoving }] = useRemoveProduct();
 
     useEffect(() => {
         if (!productData) return;
@@ -171,7 +173,7 @@ const ProductFormScreen = () => {
     };
 
     const submitHandler = async (): Promise<void> => {
-        if (isFetching || isEditing) return;
+        if (isCreating || isEditing || isRemoving) return;
 
         if (
             !formState.title.trim() ||
@@ -297,7 +299,6 @@ const ProductFormScreen = () => {
             });
 
         } catch (error) {
-            console.log(error)
             Toast.show({
                 type: "error",
                 text1: "Error",
@@ -309,18 +310,45 @@ const ProductFormScreen = () => {
     };
 
     const removeProductHandler = (): void => {
+        if (isCreating || isEditing || isRemoving || !productData) return;
+
         Alert.alert(
             "Warning",
             "Are you sure you want to 'REMOVE' the product?",
             [
                 { text: "Cancel", style: "cancel" },
-                { text: "Remove", style: "destructive", onPress: () => removeProduct() }
+                { text: "Remove", style: "destructive", onPress: () => deleteProduct(productData._id) }
             ]
         );
     };
 
-    const removeProduct = () => {
-        // ...
+    const deleteProduct = async (productId: string): Promise<void> => {
+        try {
+            const { data: responseData } = await removeProduct({ variables: { id: productId } });
+            const data = responseData?.removeProduct;
+
+            if (!data?._id) throw new Error("Product not found!");
+
+            Toast.show({
+                type: "success",
+                text1: "Success",
+                text2: "Product Removed successfully.",
+                position: "top",
+                onHide: () => {
+                    refetchProducts();
+                    navigation.goBack();
+                }
+            });
+
+        } catch (error) {
+            Toast.show({
+                type: "error",
+                text1: "Error",
+                text2: `Error While Removing the Product! Please try again. ${error}`,
+                position: "top",
+                useModal: true
+            });
+        }
     };
 
     if (isAdmin === null || loading) return <ActivityIndicator size="large" className="flex-1" />;
