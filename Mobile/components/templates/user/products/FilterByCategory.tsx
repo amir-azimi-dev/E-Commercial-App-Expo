@@ -46,7 +46,7 @@ const FilterByCategory = ({ selectedCategories, onSelectCategory }: FilterByCate
             bounces
             horizontal
         >
-            <View className="flex-row items-center gap-x-1 my-auto">
+            <View className="flex-row items-center gap-x-1 my-auto mr-5">
                 {[allCategory, ...categoriesData].map(category => (
                     <Pressable
                         key={category._id}

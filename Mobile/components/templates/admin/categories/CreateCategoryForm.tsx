@@ -55,7 +55,7 @@ const CreateCategoryForm = () => {
     };
 
     return (
-        <View className="mb-4 pb-4 border-gray-400 border-b" style={{ maxHeight: height / 3 }}>
+        <View className="mb-4 pb-4 border-gray-400 border-b" style={{ maxHeight: height / 2.5 }}>
             <ScrollView className="-mx-4 px-4">
                 <Text className="font-bold text-2xl text-center">Create New Category</Text>
 

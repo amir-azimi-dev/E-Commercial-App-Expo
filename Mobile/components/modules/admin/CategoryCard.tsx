@@ -2,22 +2,20 @@ import { Alert, Pressable, Text, View } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { Category } from "types";
 
-const CategoryCard = ({ _id, title, color }: Category) => {
+type CategoryCardPropsTypes = Category & {
+    removeCategory: (id: string) => Promise<void>;
+};
 
-
+const CategoryCard = ({ _id, title, color, removeCategory }: CategoryCardPropsTypes) => {
     const removeCategoryHandler = (): void => {
         Alert.alert(
             "Warning",
             "Are you sure you want to 'REMOVE' the category?",
             [
                 { text: "Cancel", style: "cancel" },
-                { text: "Remove", style: "destructive", onPress: () => deleteCategory(_id) }
+                { text: "Remove", style: "destructive", onPress: () => removeCategory(_id) }
             ]
         );
-    };
-
-    const deleteCategory = async (categoryId: string): Promise<void> => {
-
     };
 
     return (
