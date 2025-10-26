@@ -40,8 +40,8 @@ const typeDefs = `#graphql
         editProduct(id: ID!, title: String!, description: String!, richDescription: String, image: String, images: [String!], brand: String, price: Float!, category: ID!, countInStock: Int!, rating: Int, reviewsCount: Int, isFeatured: Boolean): Product,
         removeProduct(id: ID!): Product,
 
-        createCategory(title: String!, color: String!, icon: String!, image: String): Category,
-        editCategory(id: ID!, title: String!, color: String!, icon: String!, image: String): Category,
+        createCategory(title: String!, color: String!, icon: String, image: String): Category,
+        editCategory(id: ID!, title: String!, color: String!, icon: String, image: String): Category,
         removeCategory(id: ID!): Category,
 
         placeOrder(orderItems: [OrderItemInput!]!, shoppingAddress1: String!, shoppingAddress2: String, phone: String!, city: String!, zip: String!, country: String!): Order,

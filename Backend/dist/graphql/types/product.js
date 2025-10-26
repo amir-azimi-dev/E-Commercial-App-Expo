@@ -10,7 +10,7 @@ const ProductTypeDef = `#graphql
         image: String,
         images: [String!],
         brand: String,
-        price: Int!,
+        price: Float!,
         category: Category!,
         countInStock: Int!,
         rating: Int,

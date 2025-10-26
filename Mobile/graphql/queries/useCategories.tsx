@@ -3,7 +3,7 @@ import { useQuery } from "@apollo/client/react";
 import { Category } from "types";
 
 const GET_PRODUCTS = gql`
-    query {
+    query GetCategories {
         getCategories {
             _id
             title

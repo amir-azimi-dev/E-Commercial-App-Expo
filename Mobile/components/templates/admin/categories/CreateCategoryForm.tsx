@@ -1,21 +1,57 @@
 import { useState } from "react";
-import { ScrollView, Text, TextInput, useWindowDimensions, View } from "react-native";
+import { Alert, ScrollView, Text, TextInput, useWindowDimensions, View } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
+import Button from "components/modules/Button";
+import { useApolloClient } from "@apollo/client/react";
+import useCreateCategory from "graphql/mutations/useCreateCategory";
 import { categoryColors } from "db/colors";
 
 // @ts-expect-error: no types for this library
 import ColorPalette from "react-native-color-palette";
-import Button from "components/modules/Button";
+import { Toast } from "toastify-react-native";
 
 
 const CreateCategoryForm = () => {
     const [title, setTitle] = useState<string>("");
     const [color, setColor] = useState<string>(categoryColors[0]);
 
+    const [createCategory, { loading }] = useCreateCategory();
+    const client = useApolloClient();
+    const refetchCategories = () => client.refetchQueries({ include: ["GetCategories"] });
+
     const { height } = useWindowDimensions();
 
     const createCategoryHandler = async (): Promise<void> => {
-        alert(color);
+        if (loading) return;
+
+        if (!title.trim()) {
+            return Alert.alert("Invalid Entry!", "Please fill all the Inputs.");
+        }
+
+        try {
+            const { data: responseData } = await createCategory({ variables: { title, color } });
+            const data = responseData?.createCategory;
+
+            if (!data?._id) throw new Error("");
+            
+            Toast.show({
+                type: "success",
+                text1: "Success",
+                text2: "Category created successfully.",
+                position: "top"
+            });
+            
+            refetchCategories();
+
+        } catch (error) {
+            Toast.show({
+                type: "error",
+                text1: "Error",
+                text2: `Error While Creating the Category! Please try again. ${error}`,
+                position: "top",
+                useModal: true
+            });
+        }
     };
 
     return (

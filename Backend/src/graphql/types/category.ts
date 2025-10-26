@@ -1,7 +1,7 @@
 type CreateCategoryParams = {
     title: string;
     color: string;
-    icon: string;
+    icon?: string;
     image?: string;
 };
 
@@ -10,7 +10,7 @@ const CategoryTypeDef = `#graphql
         _id: ID!,
         title: String!,
         color: String!,
-        icon: String!,
+        icon: String,
         image: String,
         createdAt: Date!,
         updatedAt: Date!

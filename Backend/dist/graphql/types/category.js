@@ -6,7 +6,7 @@ const CategoryTypeDef = `#graphql
         _id: ID!,
         title: String!,
         color: String!,
-        icon: String!,
+        icon: String,
         image: String,
         createdAt: Date!,
         updatedAt: Date!
