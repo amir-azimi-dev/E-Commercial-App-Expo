@@ -1,3 +1,27 @@
+type OrderItem = {
+    _id: string;
+    product: Product;
+    quantity: number;
+    createdAt: Date;
+    updatedAt: Date;
+};
+
+type Order = {
+    _id: string;
+    orderItems: OrderItem[];
+    status: string;
+    totalPrice: number;
+    customer: User;
+    shippingAddress1: string;
+    shippingAddress2: string;
+    phone: string;
+    city: string;
+    zip: string;
+    country: string;
+    createdAt: Date;
+    updatedAt: Date;
+};
+
 type Product = {
     _id: string;
     title: string;
@@ -16,7 +40,7 @@ type Product = {
     updatedAt: Date;
 };
 
-export type ProductPreview = Pick<Product, "_id" | "title" | "image" | "price" | "countInStock">;
+type ProductPreview = Pick<Product, "_id" | "title" | "image" | "price" | "countInStock">;
 
 type Category = {
     _id: string;
@@ -49,7 +73,10 @@ type Auth = {
 };
 
 export {
+    OrderItem,
+    Order,
     Product,
+    ProductPreview,
     Category,
     User,
     Auth

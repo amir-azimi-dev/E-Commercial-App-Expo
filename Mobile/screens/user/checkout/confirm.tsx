@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { Alert, FlatList, ScrollView, Text, useWindowDimensions, View } from "react-native";
 import Button from "components/modules/Button";
+import { useApolloClient } from "@apollo/client/react";
+import usePlaceOrder from "graphql/mutations/usePlaceOrder";
 import { CommonActions, useIsFocused, useNavigation, useRoute } from "@react-navigation/native";
 import { ConfirmTabScreenProps, ConfirmTabScreenRouteProps } from "types/navigation";
 import { useAppDispatch, useAppSelector } from "redux/store";
 import { clearBasket } from "redux/reducers/basket";
 import ProductCard from "components/modules/user/ProductCard";
+import { Toast } from "toastify-react-native";
 
 const ConfirmScreen = () => {
     const [totalPrice, setTotalPrice] = useState<number>(0);
@@ -16,6 +19,10 @@ const ConfirmScreen = () => {
     const orderData = useRoute<ConfirmTabScreenRouteProps>().params;
     const navigation = useNavigation<ConfirmTabScreenProps>();
     const isFocused = useIsFocused();
+
+    const [createOrder, { loading }] = usePlaceOrder();
+    const client = useApolloClient();
+    const refetchOrders = () => client.refetchQueries({ include: ["GetOrders"] });
 
     const { height } = useWindowDimensions();
 
@@ -45,6 +52,8 @@ const ConfirmScreen = () => {
     }, [basket]);
 
     const checkoutHandler = () => {
+        if (loading) return;
+
         Alert.alert(
             "Checkout",
             "Are you sure you want to proceed?",
@@ -57,25 +66,42 @@ const ConfirmScreen = () => {
         );
     };
 
-    const placeOrder = (): void => {
-        Alert.alert(
-            "Success",
-            "Your Order Placed Successfully.",
-            [
-                {
-                    text: "Okay", style: "default", onPress: () => {
-                        dispatch(clearBasket());
+    const placeOrder = async (): Promise<void> => {
+        const { shippingAddress1, shippingAddress2, phone, city, zip, country } = orderData;
+        const orderItems = basket.map(item => ({ product: item._id, quantity: item.quantity }));
 
-                        navigation.dispatch(
-                            CommonActions.reset({
-                                index: 0,
-                                routes: [{ name: "HomeStack" }],
-                            })
-                        );
-                    }
-                }
-            ]
-        );
+        try {
+            const { data: responseData } = await createOrder({ variables: { orderItems, shippingAddress1, shippingAddress2, phone, city, zip, country } });
+            const data = responseData?.placeOrder;
+
+            if (!data?._id) throw new Error("");
+
+            Toast.show({
+                type: "success",
+                text1: "Success",
+                text2: "Order placed successfully.",
+                position: "top"
+            });
+
+            refetchOrders();
+            dispatch(clearBasket());
+
+            navigation.dispatch(
+                CommonActions.reset({
+                    index: 0,
+                    routes: [{ name: "HomeStack" }],
+                })
+            );
+
+        } catch (error) {
+            Toast.show({
+                type: "error",
+                text1: "Error",
+                text2: `Error While Placing Your Order! Please try again. ${error}`,
+                position: "top",
+                useModal: true
+            });
+        }
     };
 
     if (!orderData) return;
