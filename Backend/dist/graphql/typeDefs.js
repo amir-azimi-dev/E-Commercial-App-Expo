@@ -44,7 +44,7 @@ const typeDefs = `#graphql
         editCategory(id: ID!, title: String!, color: String!, icon: String, image: String): Category,
         removeCategory(id: ID!): Category,
 
-        placeOrder(orderItems: [OrderItemInput!]!, shoppingAddress1: String!, shoppingAddress2: String, phone: String!, city: String!, zip: String!, country: String!): Order,
+        placeOrder(orderItems: [OrderItemInput!]!, shippingAddress1: String!, shippingAddress2: String, phone: String!, city: String!, zip: String!, country: String!): Order,
         updateOrderStatus(id: ID!, newStatus: String): Order,
         removeOrder(id: ID!): Order,
     }

@@ -9,7 +9,7 @@ const order_1 = __importDefault(require("../../db/models/order"));
 const product_1 = __importDefault(require("../../db/models/product"));
 const orderItem_1 = __importDefault(require("../../db/models/orderItem"));
 const mongoose_1 = __importDefault(require("mongoose"));
-const placeOrder = async (_, { orderItems, shoppingAddress1, shoppingAddress2, phone, city, zip, country }, context) => {
+const placeOrder = async (_, { orderItems, shippingAddress1, shippingAddress2, phone, city, zip, country }, context) => {
     try {
         const hasInvalidOrderItemProductId = orderItems.some(item => (!mongoose_1.default.isValidObjectId(item.product) || item.quantity <= 0));
         if (hasInvalidOrderItemProductId)
@@ -27,7 +27,7 @@ const placeOrder = async (_, { orderItems, shoppingAddress1, shoppingAddress2, p
             manipulatedOrderItemsIds.push(newOrderItem._id.toString());
             totalPrice += targetProduct.price * item.quantity;
         }
-        const data = { orderItems: manipulatedOrderItemsIds, totalPrice, customer: context.user._id, shoppingAddress1, shoppingAddress2, phone, city, zip, country };
+        const data = { orderItems: manipulatedOrderItemsIds, totalPrice, customer: context.user._id, shippingAddress1, shippingAddress2, phone, city, zip, country };
         const newOrderData = (await order_1.default.create(data));
         await newOrderData.populate({ path: "orderItems", populate: { path: "product", populate: "category" } });
         await newOrderData.populate("customer");

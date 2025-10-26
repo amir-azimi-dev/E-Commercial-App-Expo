@@ -30,8 +30,8 @@ declare const orderSchema: mongoose.Schema<any, mongoose.Model<any, any, any, an
         createFromBase64?: {} | null;
         isValid?: {} | null;
     };
-    shoppingAddress1: string;
-    shoppingAddress2: string;
+    shippingAddress1: string;
+    shippingAddress2: string;
 }, mongoose.Document<unknown, {}, mongoose.FlatRecord<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
@@ -60,8 +60,8 @@ declare const orderSchema: mongoose.Schema<any, mongoose.Model<any, any, any, an
         createFromBase64?: {} | null;
         isValid?: {} | null;
     };
-    shoppingAddress1: string;
-    shoppingAddress2: string;
+    shippingAddress1: string;
+    shippingAddress2: string;
 }>, {}, mongoose.ResolveSchemaOptions<{
     timestamps: true;
     autoCreate: true;
@@ -93,8 +93,8 @@ declare const orderSchema: mongoose.Schema<any, mongoose.Model<any, any, any, an
         createFromBase64?: {} | null;
         isValid?: {} | null;
     };
-    shoppingAddress1: string;
-    shoppingAddress2: string;
+    shippingAddress1: string;
+    shippingAddress2: string;
 }> & {
     _id: mongoose.Types.ObjectId;
 } & {
@@ -238,8 +238,8 @@ declare const OrderModel: mongoose.Model<{
         createFromBase64?: any;
         isValid?: any;
     } | null;
-    shoppingAddress1?: unknown;
-    shoppingAddress2?: unknown;
+    shippingAddress1?: unknown;
+    shippingAddress2?: unknown;
 }, {}, {}, {}, mongoose.Document<unknown, {}, {
     createdAt: NativeDate;
     updatedAt: NativeDate;
@@ -378,8 +378,8 @@ declare const OrderModel: mongoose.Model<{
         createFromBase64?: any;
         isValid?: any;
     } | null;
-    shoppingAddress1?: unknown;
-    shoppingAddress2?: unknown;
+    shippingAddress1?: unknown;
+    shippingAddress2?: unknown;
 }, {}, {
     timestamps: true;
     autoCreate: true;
@@ -521,8 +521,8 @@ declare const OrderModel: mongoose.Model<{
         createFromBase64?: any;
         isValid?: any;
     } | null;
-    shoppingAddress1?: unknown;
-    shoppingAddress2?: unknown;
+    shippingAddress1?: unknown;
+    shippingAddress2?: unknown;
 } & {
     _id: mongoose.Types.ObjectId;
 } & {
@@ -558,8 +558,8 @@ declare const OrderModel: mongoose.Model<{
         createFromBase64?: {} | null;
         isValid?: {} | null;
     };
-    shoppingAddress1: string;
-    shoppingAddress2: string;
+    shippingAddress1: string;
+    shippingAddress2: string;
 }, mongoose.Document<unknown, {}, mongoose.FlatRecord<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
@@ -588,8 +588,8 @@ declare const OrderModel: mongoose.Model<{
         createFromBase64?: {} | null;
         isValid?: {} | null;
     };
-    shoppingAddress1: string;
-    shoppingAddress2: string;
+    shippingAddress1: string;
+    shippingAddress2: string;
 }>, {}, mongoose.ResolveSchemaOptions<{
     timestamps: true;
     autoCreate: true;
@@ -621,8 +621,8 @@ declare const OrderModel: mongoose.Model<{
         createFromBase64?: {} | null;
         isValid?: {} | null;
     };
-    shoppingAddress1: string;
-    shoppingAddress2: string;
+    shippingAddress1: string;
+    shippingAddress2: string;
 }> & {
     _id: mongoose.Types.ObjectId;
 } & {

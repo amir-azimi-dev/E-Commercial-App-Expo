@@ -23,11 +23,11 @@ const orderSchema = new mongoose.Schema({
         ref: "User",
         required: true
     },
-    shoppingAddress1: {
+    shippingAddress1: {
         type: String,
         required: true
     },
-    shoppingAddress2: {
+    shippingAddress2: {
         type: String,
         default: ""
     },

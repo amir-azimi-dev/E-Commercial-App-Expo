@@ -1,7 +1,7 @@
 type PlaceOrderParams = {
     orderItems: { product: string, quantity: number }[];
-    shoppingAddress1: string;
-    shoppingAddress2?: string;
+    shippingAddress1: string;
+    shippingAddress2?: string;
     phone: string;
     city: string;
     zip: string;
@@ -20,8 +20,8 @@ const OrderTypeDef = `#graphql
         status: String!,
         totalPrice: Float!,
         customer: User!,
-        shoppingAddress1: String!,
-        shoppingAddress2: String,
+        shippingAddress1: String!,
+        shippingAddress2: String,
         phone: String!,
         city: String!,
         zip: String!,

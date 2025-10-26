@@ -16,7 +16,7 @@ const categorySchema = new mongoose_1.default.Schema({
     },
     icon: {
         type: String,
-        required: true
+        required: false
     },
     image: {
         type: String,

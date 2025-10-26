@@ -7,17 +7,17 @@ declare const categorySchema: mongoose.Schema<any, mongoose.Model<any, any, any,
     updatedAt: NativeDate;
 } & {
     image: string;
-    icon: string;
     title?: string | null;
     color?: string | null;
+    icon?: string | null;
 }, mongoose.Document<unknown, {}, mongoose.FlatRecord<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
     image: string;
-    icon: string;
     title?: string | null;
     color?: string | null;
+    icon?: string | null;
 }>, {}, mongoose.ResolveSchemaOptions<{
     timestamps: true;
     autoCreate: true;
@@ -26,9 +26,9 @@ declare const categorySchema: mongoose.Schema<any, mongoose.Model<any, any, any,
     updatedAt: NativeDate;
 } & {
     image: string;
-    icon: string;
     title?: string | null;
     color?: string | null;
+    icon?: string | null;
 }> & {
     _id: mongoose.Types.ObjectId;
 } & {
@@ -39,17 +39,17 @@ declare const CategoryModel: mongoose.Model<{
     updatedAt: NativeDate;
 } & {
     image: string;
-    icon: string;
     title?: string | null;
     color?: string | null;
+    icon?: string | null;
 }, {}, {}, {}, mongoose.Document<unknown, {}, {
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
     image: string;
-    icon: string;
     title?: string | null;
     color?: string | null;
+    icon?: string | null;
 }, {}, {
     timestamps: true;
     autoCreate: true;
@@ -58,9 +58,9 @@ declare const CategoryModel: mongoose.Model<{
     updatedAt: NativeDate;
 } & {
     image: string;
-    icon: string;
     title?: string | null;
     color?: string | null;
+    icon?: string | null;
 } & {
     _id: mongoose.Types.ObjectId;
 } & {
@@ -73,17 +73,17 @@ declare const CategoryModel: mongoose.Model<{
     updatedAt: NativeDate;
 } & {
     image: string;
-    icon: string;
     title?: string | null;
     color?: string | null;
+    icon?: string | null;
 }, mongoose.Document<unknown, {}, mongoose.FlatRecord<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
 } & {
     image: string;
-    icon: string;
     title?: string | null;
     color?: string | null;
+    icon?: string | null;
 }>, {}, mongoose.ResolveSchemaOptions<{
     timestamps: true;
     autoCreate: true;
@@ -92,9 +92,9 @@ declare const CategoryModel: mongoose.Model<{
     updatedAt: NativeDate;
 } & {
     image: string;
-    icon: string;
     title?: string | null;
     color?: string | null;
+    icon?: string | null;
 }> & {
     _id: mongoose.Types.ObjectId;
 } & {

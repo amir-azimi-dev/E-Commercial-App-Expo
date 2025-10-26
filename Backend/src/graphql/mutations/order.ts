@@ -5,7 +5,7 @@ import OrderItemModel from "../../db/models/orderItem";
 import { PlaceOrderParams, UpdateOrderStatusParams } from "../types/order";
 import mongoose from "mongoose";
 
-const placeOrder = async (_: unknown, { orderItems, shoppingAddress1, shoppingAddress2, phone, city, zip, country }: PlaceOrderParams, context: any): Promise<OrderDocument> => {
+const placeOrder = async (_: unknown, { orderItems, shippingAddress1, shippingAddress2, phone, city, zip, country }: PlaceOrderParams, context: any): Promise<OrderDocument> => {
     try {
         const hasInvalidOrderItemProductId = orderItems.some(item => (!mongoose.isValidObjectId(item.product) || item.quantity <= 0));
         if (hasInvalidOrderItemProductId) throw new GraphQLError("Invalid entry!");
@@ -27,7 +27,7 @@ const placeOrder = async (_: unknown, { orderItems, shoppingAddress1, shoppingAd
             totalPrice += targetProduct.price * item.quantity;
         }
 
-        const data = { orderItems: manipulatedOrderItemsIds, totalPrice, customer: context.user._id, shoppingAddress1, shoppingAddress2, phone, city, zip, country };
+        const data = { orderItems: manipulatedOrderItemsIds, totalPrice, customer: context.user._id, shippingAddress1, shippingAddress2, phone, city, zip, country };
         const newOrderData = (await OrderModel.create(data));
         await newOrderData.populate({ path: "orderItems", populate: { path: "product", populate: "category" } });
         await newOrderData.populate("customer");
