@@ -1,10 +1,10 @@
 import { gql } from "@apollo/client";
-import { useMutation } from "@apollo/client/react";
+import { useQuery } from "@apollo/client/react";
 import { Order } from "types";
 
-const PLACE_ORDER = gql`
-    mutation ($orderItems: [OrderItemInput!]!, $shippingAddress1: String!, $shippingAddress2: String, $phone: String!, $city: String!, $zip: String!, $country: String!) {
-        placeOrder(orderItems: $orderItems, shippingAddress1: $shippingAddress1, shippingAddress2: $shippingAddress2, phone: $phone, city: $city, zip: $zip, country: $country) {
+const GET_ORDERS = gql`
+    query GetOrders {
+        getOrders {
             _id
             orderItems {
                 _id
@@ -66,22 +66,12 @@ const PLACE_ORDER = gql`
     }
 `;
 
-type PlaceOrderVars = {
-    orderItems: { product: string, quantity: number }[];
-    shippingAddress1: string;
-    shippingAddress2: string;
-    phone: string;
-    city: string;
-    zip: string;
-    country: string;
+type GetOrdersData = {
+    getOrders: Order[];
 };
 
-type PlaceOrderData = {
-    placeOrder: Order;
-};
-
-const usePlaceOrder = () => {
-    return useMutation<PlaceOrderData, PlaceOrderVars>(PLACE_ORDER);
+const useOrders = () => {
+    return useQuery<GetOrdersData>(GET_ORDERS);
 }
 
-export default usePlaceOrder;
+export default useOrders;

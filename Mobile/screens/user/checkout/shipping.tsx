@@ -120,7 +120,6 @@ const ShippingScreen = () => {
                         {countries.map(country => <Picker.Item key={country} label={country} value={country} />)}
                     </Picker>
                 </View>
-
             </View>
             <View className="mb-4">
                 <Text className="mb-1 font-semibold">City</Text>
