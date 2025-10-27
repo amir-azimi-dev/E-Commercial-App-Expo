@@ -1,9 +1,10 @@
-import { useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import { Platform, Text, TextInput, View, ScrollView, Alert } from "react-native";
 import Button from "components/modules/Button";
-import { useNavigation } from "@react-navigation/native";
-import { ShippingTabScreenProps } from "types/navigation";
+import { useAppSelector } from "redux/store";
 import { Picker } from '@react-native-picker/picker';
+import { useIsFocused, useNavigation } from "@react-navigation/native";
+import { ShippingTabScreenProps } from "types/navigation";
 import countries from "db/countries";
 
 export type ShippingState = {
@@ -53,9 +54,17 @@ const reducer = (state: ShippingState, action: { type: ActionTypes, payload: str
 };
 
 const ShippingScreen = () => {
+    const user = useAppSelector(state => state.user);
+
     const [formState, dispatch] = useReducer(reducer, initialState);
 
     const navigation = useNavigation<ShippingTabScreenProps>();
+    const isFocused = useIsFocused();
+
+    useEffect(() => {
+        if (!user._id) setTimeout(() => navigation.getParent()?.navigate("Basket"), 200);
+
+    }, [isFocused]);
 
     const changeInputHandler = (field: ActionTypes, newValue: string) => {
         dispatch({ type: field, payload: newValue });

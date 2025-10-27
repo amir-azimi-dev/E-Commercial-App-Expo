@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from "redux/store";
 const BasketScreen = () => {
     const [totalPrice, setTotalPrice] = useState<number>(0);
 
-    const basket = useAppSelector(state => state.basket).basket;
+    const { basket: { basket }, user } = useAppSelector(state => state);
     const dispatch = useAppDispatch();
 
     const navigation = useNavigation<BasketScreenProps>();
@@ -31,6 +31,10 @@ const BasketScreen = () => {
             ]
         );
     }
+
+    const navigateToLoginScreenHandler = () => {
+        navigation.getParent()?.navigate("User");
+    };
 
     const checkoutHandler = () => {
         Alert.alert(
@@ -62,10 +66,17 @@ const BasketScreen = () => {
                         className="flex-1 -mx-4 my-4 px-4"
                     />
 
-                    <View className="flex-row justify-between items-center mb-1.5 py-2 border-neutral-500 border-t">
-                        <Text className="font-semibold text-neutral-500 text-xl">Total Price: ${totalPrice.toLocaleString()}</Text>
-                        <Button title="Checkout" color="#0dc70d" onPress={checkoutHandler} />
-                    </View>
+                    {user._id ? (
+                        <View className="flex-row justify-between items-center mb-1.5 py-2 border-neutral-500 border-t">
+                            <Text className="font-semibold text-neutral-500 text-xl">Total Price: ${totalPrice.toLocaleString()}</Text>
+                            <Button title="Checkout" color="#0dc70d" onPress={checkoutHandler} />
+                        </View>
+                    ) : (
+                        <View className="flex-row justify-between items-center mb-1.5 py-2 border-neutral-500 border-t">
+                            <Text className="font-semibold text-neutral-500 text-xl">You need to Sign In to proceed.</Text>
+                            <Button title="Sign In" color="#000" onPress={navigateToLoginScreenHandler} />
+                        </View>
+                    )}
                 </>
             ) : (
                 <View className="flex-1 justify-center items-center">

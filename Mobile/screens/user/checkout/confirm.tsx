@@ -13,7 +13,7 @@ import { Toast } from "toastify-react-native";
 const ConfirmScreen = () => {
     const [totalPrice, setTotalPrice] = useState<number>(0);
 
-    const basket = useAppSelector(state => state.basket).basket;
+    const { basket: { basket }, user } = useAppSelector(state => state);
     const dispatch = useAppDispatch();
 
     const orderData = useRoute<ConfirmTabScreenRouteProps>().params;
@@ -25,6 +25,11 @@ const ConfirmScreen = () => {
     const refetchOrders = () => client.refetchQueries({ include: ["GetOrders"] });
 
     const { height } = useWindowDimensions();
+
+    useEffect(() => {
+        if (!user._id) navigation.getParent()?.navigate("Basket");
+
+    }, [isFocused]);
 
     useEffect(() => {
         if (!orderData) return navigation.navigate("Shipping");
