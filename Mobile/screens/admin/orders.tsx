@@ -3,6 +3,7 @@ import { ActivityIndicator, FlatList, Text, View } from "react-native";
 import { useApolloClient } from "@apollo/client/react";
 import useOrders from "graphql/queries/useOrders";
 import useUpdateOrderStatus from "graphql/mutations/useUpdateOrderStatus";
+import useRemoveOrder from "graphql/mutations/useRemoveOrder";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { AdminStackProps } from "types/navigation";
 import useIsAdmin from "utils/useIsAdmin";
@@ -14,6 +15,7 @@ const OrdersScreen = () => {
 
     const { data: orders, loading, error } = useOrders();
     const [updateOrderStatus, { loading: isUpdatingOrderStatus }] = useUpdateOrderStatus();
+    const [removeOrder, { loading: isRemovingOrder }] = useRemoveOrder();
     const client = useApolloClient();
 
     const navigation = useNavigation<AdminStackProps>();
@@ -56,6 +58,33 @@ const OrdersScreen = () => {
         }
     };
 
+    const removeOrderHandler = async (id: string): Promise<void> => {
+        try {
+            const { data: responseData } = await removeOrder({ variables: { id } });
+            const data = responseData?.removeOrder;
+
+            if (!data?._id) throw new Error("");
+
+            Toast.show({
+                type: "success",
+                text1: "Success",
+                text2: "The Order removed successfully.",
+                position: "top"
+            });
+
+            refetchOrders();
+
+        } catch (error) {
+            Toast.show({
+                type: "error",
+                text1: "Error",
+                text2: `Error While Removing the Order! Please try again. ${error}`,
+                position: "top",
+                useModal: true
+            });
+        }
+    };
+
     if (isAdmin === null || loading) return <ActivityIndicator size="large" className="flex-1" />;
     if (error) return <Text className="mt-5 font-bold text-2xl text-center">Error While Fetching Data!</Text>;
     if (isAdmin === false) return;
@@ -68,7 +97,14 @@ const OrdersScreen = () => {
 
             <FlatList
                 data={orders?.getOrders}
-                renderItem={({ item }) => <OrderCard {...item} isFetching={isUpdatingOrderStatus} onUpdateOrderStatus={updateOrderStatusHandler} />}
+                renderItem={({ item }) => (
+                    <OrderCard
+                        {...item}
+                        isFetching={isUpdatingOrderStatus || isRemovingOrder}
+                        onUpdateOrderStatus={updateOrderStatusHandler}
+                        onRemoveOrder={removeOrderHandler}
+                    />)
+                }
                 keyExtractor={order => order._id}
                 contentContainerStyle={{ rowGap: 12 }}
                 className="-mx-4 my-3 px-4"

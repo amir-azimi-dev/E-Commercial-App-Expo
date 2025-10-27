@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Alert, Pressable, Text, View } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { Order } from "~/../types";
+import Button from "../Button";
 
 const OrderStatuses = ["Rejected", "Pending", "Processing", "Shipped", "Delivered"] as const;
 type OrderStatus = typeof OrderStatuses[number];
@@ -9,6 +10,7 @@ type OrderStatus = typeof OrderStatuses[number];
 type OrderCardPropsTypes = Order & {
     isFetching: boolean;
     onUpdateOrderStatus: (id: string, newStatus: OrderStatus) => Promise<void>;
+    onRemoveOrder: (id: string) => Promise<void>;
 };
 
 const OrderCard = ({
@@ -24,7 +26,8 @@ const OrderCard = ({
     zip,
     createdAt,
     isFetching,
-    onUpdateOrderStatus
+    onUpdateOrderStatus,
+    onRemoveOrder
 }: OrderCardPropsTypes) => {
     const [isUpdatingStatus, setIsUpdatingStatus] = useState<boolean>(false);
 
@@ -57,8 +60,29 @@ const OrderCard = ({
         setIsUpdatingStatus(false);
     };
 
+    const removeOrderHandler = (): void => {
+        if (isFetching) return;
+
+        Alert.alert(
+            "Remove Order?",
+            "Are you sure you want to proceed?",
+            [
+                { text: "Discard", style: "cancel" },
+                {
+                    text: "Remove Order", style: "destructive", onPress: removeOrder.bind(this, _id)
+                }
+            ]
+        );
+    };
+
+    const removeOrder = async (id: string): Promise<void> => {
+        setIsUpdatingStatus(true);
+        await onRemoveOrder(id);
+        setIsUpdatingStatus(false);
+    };
+
     return (
-        <View className="p-4 bg-white rounded-lg overflow-hidden" style={{ opacity: isUpdatingStatus ? 0.5 : 1 }}>
+        <View className="px-4 py-5 bg-white rounded-lg overflow-hidden" style={{ opacity: isUpdatingStatus ? 0.5 : 1 }}>
             <View className="flex flex-row justify-between gap-x-3 mb-3 pb-3 border-gray-300 border-b">
                 <View>
                     <Text className="mb-2 font-bold">#{_id.substring(0, 8)}</Text>
@@ -126,7 +150,7 @@ const OrderCard = ({
                 </View>
             </View>
 
-            <View className="mb-4">
+            <View className="mb-8">
                 <Text className="mb-1 font-semibold">Status</Text>
 
                 <View className="flex-row flex-wrap justify-center gap-2">
@@ -146,8 +170,9 @@ const OrderCard = ({
                         </View>
                     ))}
                 </View>
-
             </View>
+
+            <Button title="Remove" color="#f73131" onPress={removeOrderHandler} />
         </View>
     );
 };
