@@ -13,7 +13,8 @@ import { Toast } from "toastify-react-native";
 const ConfirmScreen = () => {
     const [totalPrice, setTotalPrice] = useState<number>(0);
 
-    const { basket: { basket }, user } = useAppSelector(state => state);
+    const user = useAppSelector(state => state.user);
+    const basket = useAppSelector(state => state.basket.basket);
     const dispatch = useAppDispatch();
 
     const orderData = useRoute<ConfirmTabScreenRouteProps>().params;
