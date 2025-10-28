@@ -8,6 +8,7 @@ import { useApolloClient } from "@apollo/client/react";
 import AuthenticateUser from "utils/AuthenticateUser";
 import Button from "components/modules/Button";
 import { Toast } from "toastify-react-native";
+import UserOrders from "components/templates/user/profile/UserOrders";
 
 const ProfileScreen = () => {
     const user = useAppSelector(state => state.user);
@@ -48,20 +49,23 @@ const ProfileScreen = () => {
     if (!user._id) return;
 
     return (
-        <ScrollView className="flex-1 p-8 bg-slate-200">
-            <Text className="mb-6 font-bold text-3xl text-center">User Information</Text>
+        <View className="flex-1 p-8 bg-slate-200">
+            <ScrollView className="flex-1 -mx-4 px-4">
+                <Text className="mb-6 font-bold text-3xl text-center">User Information</Text>
 
-            <Text className="mb-3 pb-3 border-gray-400 border-b text-lg">Name: <Text className="font-bold">{user.name}</Text></Text>
-            <Text className="mb-3 pb-3 border-gray-400 border-b text-lg">Email: <Text className="font-bold">{user.email}</Text></Text>
-            <Text className="mb-3 pb-3 border-gray-400 border-b text-lg">Phone: <Text className="font-bold">{user.phone}</Text></Text>
-            <Text className="mb-3 pb-3 border-gray-400 border-b text-lg">Role: <Text className="font-bold">{user.isAdmin ? "Admin" : "User"}</Text></Text>
+                <Text className="mb-3 pb-3 border-gray-400 border-b text-lg">Name: <Text className="font-bold">{user.name}</Text></Text>
+                <Text className="mb-3 pb-3 border-gray-400 border-b text-lg">Email: <Text className="font-bold">{user.email}</Text></Text>
+                <Text className="mb-3 pb-3 border-gray-400 border-b text-lg">Phone: <Text className="font-bold">{user.phone}</Text></Text>
+                <Text className="mb-3 pb-3 border-gray-400 border-b text-lg">Role: <Text className="font-bold">{user.isAdmin ? "Admin" : "User"}</Text></Text>
 
-            <View className="my-4">
-                <Button title="Logout" color="red" onPress={logoutHandler} />
-            </View>
+                <View className="my-4">
+                    <Button title="Logout" color="red" onPress={logoutHandler} />
+                </View>
+            </ScrollView>
 
+            <UserOrders />
             <AuthenticateUser />
-        </ScrollView>
+        </View>
     );
 };
 

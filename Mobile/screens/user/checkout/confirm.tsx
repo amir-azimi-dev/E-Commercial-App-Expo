@@ -23,7 +23,7 @@ const ConfirmScreen = () => {
 
     const [createOrder, { loading }] = usePlaceOrder();
     const client = useApolloClient();
-    const refetchOrders = () => client.refetchQueries({ include: ["GetOrders"] });
+    const refetchOrders = () => client.refetchQueries({ include: ["GetOrders", "GetUserOrders"] });
 
     const { height } = useWindowDimensions();
 

@@ -20,7 +20,7 @@ const OrdersScreen = () => {
 
     const navigation = useNavigation<AdminStackProps>();
     const isFocused = useIsFocused();
-    const refetchOrders = () => client.refetchQueries({ include: ["GetOrders"] });
+    const refetchOrders = () => client.refetchQueries({ include: ["GetOrders", "GetUserOrders"] });
 
     useLayoutEffect(() => {
         if (!isFocused) return;
