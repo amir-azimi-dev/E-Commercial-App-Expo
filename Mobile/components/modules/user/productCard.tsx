@@ -7,7 +7,12 @@ import { useAppDispatch, useAppSelector } from "redux/store";
 import { addOne, removeOne } from "redux/reducers/basket";
 import { Toast } from "toastify-react-native";
 
-const ProductCard = ({ _id, title, image, price, countInStock, disableNavigation }: ProductPreview & { disableNavigation?: boolean }) => {
+type ProductCardPropsTypes = ProductPreview & {
+    disableNavigation?: boolean;
+    useParentNavigator?: boolean;
+};
+
+const ProductCard = ({ _id, title, image, price, countInStock, disableNavigation, useParentNavigator }: ProductCardPropsTypes) => {
     const basket = useAppSelector(state => state.basket).basket;
     const dispatch = useAppDispatch();
 
@@ -35,6 +40,14 @@ const ProductCard = ({ _id, title, image, price, countInStock, disableNavigation
 
     const navigateToProductDetailsHandler = (): void => {
         if (disableNavigation) return;
+
+        if (useParentNavigator) {
+            return navigation.getParent()?.navigate("HomeStack", {
+                screen: "ProductDetails",
+                params: { id: _id }
+            });
+        }
+        
         navigation.navigate("ProductDetails", { id: _id });
     };
 

@@ -59,7 +59,7 @@ const BasketScreen = () => {
 
                     <FlatList
                         data={basket}
-                        renderItem={({ item }) => <ProductCard {...item} />}
+                        renderItem={({ item }) => <ProductCard {...item} useParentNavigator />}
                         keyExtractor={item => item._id}
                         contentContainerStyle={{ rowGap: 10 }}
                         columnWrapperStyle={{ columnGap: 10 }}

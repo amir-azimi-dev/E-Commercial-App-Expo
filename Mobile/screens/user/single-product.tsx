@@ -1,150 +1,36 @@
-import { useLayoutEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Text, View, ActivityIndicator, Image, ScrollView, Button, Platform } from "react-native";
-import { Product } from "types";
 import { ProductDetailsScreenProps, ProductDetailsScreenRouteProps } from "types/navigation";
 import { useAppDispatch, useAppSelector } from "redux/store";
 import { addOne, removeOne } from "redux/reducers/basket";
 import { Toast } from "toastify-react-native";
-
-const testProduct = [
-    {
-        "_id": "68d7d4cb1e39357d53fb80b5",
-        "title": "product title 1",
-        "description": "product description",
-        "richDescription": "",
-        "image": "5363044a-3434-4ea9-9f1a-31a5f8a8f51b-1759759479362.webp",
-        "images": [
-            "932d7441-cc5d-4573-9369-286ee6f67afe-1759759479362.jpg",
-            "61b986c9-3d8f-45de-8c37-19c7eb53d4c9-1759759475896.jpg"
-        ],
-        "brand": "",
-        "price": 1000000,
-        "category": {
-            "_id": "68d683782f2799fb2c870d57",
-            "title": "computer",
-            "color": "#444",
-            "icon": "icon-computer",
-            "image": "",
-            "createdAt": new Date(),
-            "updatedAt": new Date()
-        },
-        "countInStock": 11,
-        "rating": 4,
-        "reviewsCount": 2,
-        "isFeatured": true,
-        "createdAt": new Date(),
-        "updatedAt": new Date()
-    },
-    {
-        "_id": "68d7d4cb1e39357d53fb80b3",
-        "title": "product title 2",
-        "description": "product description",
-        "richDescription": "",
-        "image": "",
-        "images": [],
-        "brand": "",
-        "price": 1000000,
-        "category": {
-            "_id": "68d683782f2799fb2c870d57",
-            "title": "computer",
-            "color": "#444",
-            "icon": "icon-computer",
-            "image": "",
-            "createdAt": new Date(),
-            "updatedAt": new Date()
-        },
-        "countInStock": 11,
-        "rating": 4,
-        "reviewsCount": 2,
-        "isFeatured": true,
-        "createdAt": new Date(),
-        "updatedAt": new Date()
-    },
-    {
-        "_id": "68d7d4cb1e39357d53fb80b2",
-        "title": "product title 3",
-        "description": "product description",
-        "richDescription": "",
-        "image": "",
-        "images": [],
-        "brand": "",
-        "price": 1000000,
-        "category": {
-            "_id": "68d683782f2799fb2c870d57",
-            "title": "computer",
-            "color": "#444",
-            "icon": "icon-computer",
-            "image": "",
-            "createdAt": new Date(),
-            "updatedAt": new Date()
-        },
-        "countInStock": 11,
-        "rating": 4,
-        "reviewsCount": 2,
-        "isFeatured": true,
-        "createdAt": new Date(),
-        "updatedAt": new Date()
-    },
-    {
-        "_id": "68d7d4cb1e39357d53fb80b1",
-        "title": "product title 4",
-        "description": "product description",
-        "richDescription": "",
-        "image": "",
-        "images": [],
-        "brand": "",
-        "price": 1000000,
-        "category": {
-            "_id": "68d683782f2799fb2c870d57",
-            "title": "computer",
-            "color": "#444",
-            "icon": "icon-computer",
-            "image": "",
-            "createdAt": new Date(),
-            "updatedAt": new Date()
-        },
-        "countInStock": 11,
-        "rating": 4,
-        "reviewsCount": 2,
-        "isFeatured": true,
-        "createdAt": new Date(),
-        "updatedAt": new Date()
-    }
-];
+import useProduct from "graphql/queries/useProduct";
 
 const SingleProductsScreen = () => {
-    const [product, setProduct] = useState<Product | null>(null);
-
     const basket = useAppSelector(state => state.basket.basket);
     const dispatch = useAppDispatch();
 
     const params = useRoute<ProductDetailsScreenRouteProps>().params;
     const navigation = useNavigation<ProductDetailsScreenProps>();
 
-    useLayoutEffect(() => {
-        if (!params?.id) return navigation.goBack();
+    const { data: product, loading, error } = useProduct({ id: params.id });
 
-        const targetProduct = testProduct.find(product => product._id === params.id);
-        if (!targetProduct) return navigation.goBack();
-
+    useEffect(() => {
         navigation.setOptions({
-            title: targetProduct.title
+            title: product?.getProduct.title
         });
 
-        setProduct(targetProduct);
-
-
-    }, [params, navigation]);
+    }, [product?.getProduct.title]);
 
     const getAvailabilityText = () => {
         if (!product) return;
 
-        if (product.countInStock >= 5) {
+        if (product.getProduct.countInStock >= 5) {
             return "Available";
         }
 
-        if (product.countInStock > 0) {
+        if (product.getProduct.countInStock > 0) {
             return "Available";
         }
 
@@ -154,11 +40,11 @@ const SingleProductsScreen = () => {
     const getAvailabilityColor = () => {
         if (!product) return;
 
-        if (product.countInStock >= 5) {
+        if (product.getProduct.countInStock >= 5) {
             return "#00ff00";
         }
 
-        if (product.countInStock > 0) {
+        if (product.getProduct.countInStock > 0) {
             return "#d2ba0a";
         }
 
@@ -168,7 +54,7 @@ const SingleProductsScreen = () => {
     const addToBasketHandler = (): void => {
         if (!product) return;
 
-        const { _id, title, image, price, countInStock } = product;
+        const { _id, title, image, price, countInStock } = product.getProduct;
         dispatch(addOne({ _id, title, image, price, quantity: 1, countInStock }));
 
         Toast.show({
@@ -182,28 +68,29 @@ const SingleProductsScreen = () => {
     const removeFromBasketHandler = (): void => {
         if (!product) return;
 
-        dispatch(removeOne(product._id));
+        dispatch(removeOne(product.getProduct._id));
 
         Toast.show({
             type: "default",
             text1: "Success",
-            text2: `"${product.title}" removed from cart.`,
+            text2: `"${product.getProduct.title}" removed from cart.`,
             position: "top"
         });
     };
 
-    if (!product) return <ActivityIndicator size="large" className="flex-1" />;
+    if (loading) return <ActivityIndicator size="large" className="flex-1" />;
+    if (error) return <Text className="mt-5 font-bold text-2xl text-center">Error While Fetching Data!</Text>;
 
     return (
         <View className="flex-1 px-5 pt-10 pb-6 bg-white">
             <ScrollView>
                 <Image
-                    source={product.image ? { uri: `${Platform.select({ ios: process.env.EXPO_PUBLIC_STATIC_BASE_URL, android: process.env.EXPO_PUBLIC_ANDROID_STATIC_BASE_URL })}/${product.image}` } : require("~/../assets/box.png")}
+                    source={product?.getProduct.image ? { uri: `${Platform.select({ ios: process.env.EXPO_PUBLIC_STATIC_BASE_URL, android: process.env.EXPO_PUBLIC_ANDROID_STATIC_BASE_URL })}/${product?.getProduct.image}` } : require("~/../assets/box.png")}
                     className="h-56 mx-auto aspect-video"
                     resizeMode="contain"
                 />
-                <Text className="mt-3 font-bold text-3xl text-center">{product.title}</Text>
-                {product.brand && <Text className="mt-2 font-bold text-2xl text-center">{product.brand}</Text>}
+                <Text className="mt-3 font-bold text-3xl text-center">{product?.getProduct.title}</Text>
+                {product?.getProduct.brand && <Text className="mt-2 font-bold text-2xl text-center">{product?.getProduct.brand}</Text>}
 
                 <View className="flex-row justify-center items-center gap-x-2 my-3">
                     <Text>Availability: </Text>
@@ -213,15 +100,15 @@ const SingleProductsScreen = () => {
                     </View>
                 </View>
 
-                <Text className="mt-3 pt-3 border-gray-300 border-t text-lg">{product.description}</Text>
+                <Text className="mt-3 pt-3 border-gray-300 border-t text-lg">{product?.getProduct.description}</Text>
             </ScrollView>
 
             <View className="flex-row justify-between items-center mt-auto pt-3 border-gray-300 border-t">
-                <Text className="font-bold text-2xl text-tint">${product.price.toLocaleString()}</Text>
+                <Text className="font-bold text-2xl text-tint">${product?.getProduct.price.toLocaleString()}</Text>
 
-                {!!product.countInStock ? (
+                {!!product?.getProduct.countInStock ? (
                     <View className={Platform.OS !== "ios" ? "mt-1" : ""}>
-                        {basket.some(item => item._id === product._id) ? (
+                        {basket.some(item => item._id === product?.getProduct._id) ? (
                             <Button title="Remove" color="red" onPress={removeFromBasketHandler} />
                         ) : (
                             <Button title="Add to Cart" color="green" onPress={addToBasketHandler} />

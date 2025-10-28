@@ -2,9 +2,9 @@ import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client/react";
 import { Product } from "types";
 
-const GET_PRODUCTS = gql`
-    query GetProducts ($count: Int, $categories: [String!], $onlyFeaturedProducts: Boolean) {
-        getProducts(count: $count, categories: $categories, onlyFeaturedProducts: $onlyFeaturedProducts) {
+const GET_PRODUCT = gql`
+    query GetProduct ($id: ID!) {
+        getProduct(id: $id) {
             _id
             title
             description
@@ -32,18 +32,16 @@ const GET_PRODUCTS = gql`
     }
 `;
 
-type GetProductsData = {
-    getProducts: Product[];
+type GetProductData = {
+    getProduct: Product;
 };
 
-type GetProductsVars = {
-    count?: number;
-    categories?: string[];
-    onlyFeaturedProducts?: boolean;
+type GetProductVars = {
+    id: string;
 };
 
-const useProducts = ({ count, categories, onlyFeaturedProducts }: GetProductsVars) => {
-    return useQuery<GetProductsData, GetProductsVars>(GET_PRODUCTS, { variables: { count, categories, onlyFeaturedProducts } });
+const useProduct = ({ id }: GetProductVars) => {
+    return useQuery<GetProductData, GetProductVars>(GET_PRODUCT, { variables: { id } });
 }
 
-export default useProducts;
+export default useProduct;
