@@ -29,6 +29,7 @@ const typeDefs = `#graphql
 
         getOrders: [Order!]!,
         getOrder(id: ID!): Order,
+        getUserOrders: [Order!]!,
     }
 
     type Mutation {

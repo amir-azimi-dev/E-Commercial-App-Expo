@@ -32,7 +32,25 @@ const getOrder = async (_: unknown, { id }: { id: string }): Promise<OrderDocume
     }
 };
 
+const getUserOrders = async (_: unknown, __: unknown, context: any): Promise<OrderDocument[]> => {
+    try {
+        const userId = context.user.id as string;
+
+        const orderData = await OrderModel.find({ customer: userId })
+            .populate({ path: "orderItems", populate: { path: "product", populate: "category" } })
+            .populate("customer");
+
+        if (!orderData) throw new GraphQLError("Order not found!");
+
+        return orderData;
+
+    } catch (error: any) {
+        throw new GraphQLError(error);
+    }
+};
+
 export {
     getOrders,
-    getOrder
+    getOrder,
+    getUserOrders
 };

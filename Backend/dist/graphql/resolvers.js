@@ -24,6 +24,7 @@ const resolvers = {
         getCategory: category_2.getCategory,
         getOrders: (0, admin_1.default)(order_2.getOrders),
         getOrder: (0, admin_1.default)(order_2.getOrder),
+        getUserOrders: (0, authorized_1.default)(order_2.getUserOrders),
         getStatistics: (0, authorized_1.default)(statistics_1.getStatistics),
     },
     Mutation: {

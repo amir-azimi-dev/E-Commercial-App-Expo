@@ -8,7 +8,7 @@ import { getCategories, getCategory } from "./queries/category";
 import { getStatistics } from "./queries/statistics";
 import { getMe, getUser, getUsers } from "./queries/user";
 import { placeOrder, removeOrder, updateOrderStatus } from "./mutations/order";
-import { getOrder, getOrders } from "./queries/order";
+import { getOrder, getOrders, getUserOrders } from "./queries/order";
 
 const resolvers = {
     Query: {
@@ -23,6 +23,7 @@ const resolvers = {
 
         getOrders: isAdminMiddleware(getOrders),
         getOrder: isAdminMiddleware(getOrder),
+        getUserOrders: isAuthorizedMiddleware(getUserOrders),
 
         getStatistics: isAuthorizedMiddleware(getStatistics),
     },

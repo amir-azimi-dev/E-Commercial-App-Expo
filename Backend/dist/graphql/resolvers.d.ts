@@ -10,6 +10,7 @@ declare const resolvers: {
         }) => Promise<import("../db/models/category").CategoryDocument>;
         getOrders: (parent: any, args: any, context: any, info: any) => any;
         getOrder: (parent: any, args: any, context: any, info: any) => any;
+        getUserOrders: (parent: any, args: any, context: any, info: any) => any;
         getStatistics: (parent: any, args: any, context: any, info: any) => any;
     };
     Mutation: {

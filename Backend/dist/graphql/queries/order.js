@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getOrder = exports.getOrders = void 0;
+exports.getUserOrders = exports.getOrder = exports.getOrders = void 0;
 const graphql_1 = require("graphql");
 const order_1 = __importDefault(require("../../db/models/order"));
 const mongoose_1 = __importDefault(require("mongoose"));
@@ -35,4 +35,19 @@ const getOrder = async (_, { id }) => {
     }
 };
 exports.getOrder = getOrder;
+const getUserOrders = async (_, __, context) => {
+    try {
+        const userId = context.user.id;
+        const orderData = await order_1.default.find({ customer: userId })
+            .populate({ path: "orderItems", populate: { path: "product", populate: "category" } })
+            .populate("customer");
+        if (!orderData)
+            throw new graphql_1.GraphQLError("Order not found!");
+        return orderData;
+    }
+    catch (error) {
+        throw new graphql_1.GraphQLError(error);
+    }
+};
+exports.getUserOrders = getUserOrders;
 //# sourceMappingURL=order.js.map
