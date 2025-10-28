@@ -25,6 +25,22 @@ const getProducts = async (_: unknown, { count, categories, onlyFeaturedProducts
     }
 };
 
+const getProduct = async (_: unknown, { id }: { id: string }): Promise<ProductDocument> => {
+    try {
+        if (!mongoose.isValidObjectId(id)) throw new GraphQLError("Invalid entry!");
+
+        const productData = await ProductModel.findById(id).populate("category");
+
+        if (!productData) throw new GraphQLError("Product not found!");
+
+        return productData;
+
+    } catch (error: any) {
+        throw new GraphQLError(error);
+    }
+};
+
 export {
-    getProducts
+    getProducts,
+    getProduct
 };

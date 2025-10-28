@@ -21,6 +21,7 @@ const typeDefs = `#graphql
         getMe: User,
 
         getProducts(count: Int, categories: [String!], onlyFeaturedProducts: Boolean): [Product!]!,
+        getProduct(id: ID!): Product,
 
         getCategories: [Category!]!,
         getCategory(id: ID!): Category,

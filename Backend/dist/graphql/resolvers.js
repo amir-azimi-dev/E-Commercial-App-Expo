@@ -20,6 +20,7 @@ const resolvers = {
         getUser: (0, admin_1.default)(user_2.getUser),
         getMe: user_2.getMe,
         getProducts: product_2.getProducts,
+        getProduct: product_2.getProduct,
         getCategories: category_2.getCategories,
         getCategory: category_2.getCategory,
         getOrders: (0, admin_1.default)(order_2.getOrders),
